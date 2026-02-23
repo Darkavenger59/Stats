@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatsLudique - UE27 Pr. Balayé</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card { transition: transform 0.3s; }
+        .card:hover { transform: scale(1.02); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans">
+
+    <nav class="bg-indigo-600 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">📊 StatsMaster UE27</h1>
+            <div class="space-x-4">
+                <button onclick="showSection('home')" class="hover:underline">Accueil</button>
+                <button onclick="showSection('quiz')" class="hover:underline">Quiz Chapitres</button>
+                <button onclick="showSection('annales')" class="hover:underline">Annales</button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Apprendre le Cours de façon Ludique</h2>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-blue-500 card">
+                <h3 class="font-bold text-lg mb-2">1. Intro à la Statistique</h3>
+                <p class="text-gray-600 text-sm mb-4">La science du recueil et de l'analyse. Distinguer Descriptive vs Inférentielle.</p>
+                <ul class="text-xs space-y-2 mb-4">
+                    <li>🔹 <b>p < 0.05</b> = Significatif (Rejet H0)</li>
+                    <li>🔹 <b>Qualitatif</b> (Nominal/Ordinal)</li>
+                    <li>🔹 <b>Quantitatif</b> (Discret/Continu)</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-green-500 card">
+                <h3 class="font-bold text-lg mb-2">2. Test Diagnostique</h3>
+                <p class="text-gray-600 text-sm mb-4">Se, Sp, VPP, VPN et la concordance (Kappa).</p>
+                <ul class="text-xs space-y-2 mb-4">
+                    <li>🔹 <b>Sensibilité</b> : P(T+|M+)</li>
+                    <li>🔹 <b>Spécificité</b> : P(T-|M-)</li>
+                    <li>🔹 <b>Kappa</b> : Concordance réelle vs hasard</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-purple-500 card">
+                <h3 class="font-bold text-lg mb-2">3. Épidémiologie</h3>
+                <p class="text-gray-600 text-sm mb-4">Mesurer la fréquence et les risques (RR/OR).</p>
+                <ul class="text-xs space-y-2 mb-4">
+                    <li>🔹 <b>Prévalence</b> : "Photo" à un instant T</li>
+                    <li>🔹 <b>Incidence</b> : "Film" (nouveaux cas)</li>
+                    <li>🔹 <b>RR / OR</b> : Si IC95% exclut 1 = Significatif</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz-container" class="container mx-auto p-6 hidden">
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+            <div id="quiz-header" class="mb-6">
+                <h2 id="quiz-title" class="text-2xl font-bold text-indigo-600"></h2>
+                <div class="w-full bg-gray-200 h-2 rounded-full mt-2">
+                    <div id="progress-bar" class="bg-indigo-500 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="question-box">
+                <p id="question-text" class="text-lg font-medium mb-6"></p>
+                <div id="options-container" class="space-y-3"></div>
+            </div>
+
+            <div id="result-box" class="hidden text-center">
+                <h3 class="text-4xl font-bold mb-4">Fini ! 🏆</h3>
+                <p id="final-score" class="text-2xl mb-6"></p>
+                <button onclick="showSection('home')" class="bg-indigo-600 text-white px-6 py-2 rounded-lg">Retour à l'accueil</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const questions = {
+            chapitre: [
+                { q: "Quelle est la définition de la Sensibilité ?", o: ["P(T+|M+)", "P(M+|T+)", "P(T-|M-)"], a: 0 },
+                { q: "Si p = 0.03, le test est-il significatif ?", o: ["Oui", "Non"], a: 0 },
+                { q: "L'incidence est un indicateur...", o: ["Statique", "Dynamique"], a: 1 }
+            ],
+            annales: [
+                { q: "Q16: À propos du Risque Relatif (RR) :", o: ["Se calcule en étude de cohorte", "RR=1 signifie pas d'association", "S'utilise en étude transversale"], a: 0 },
+                { q: "Q17: Lequel est significatif ?", o: ["OR=1.10 IC[0.90;1.32]", "OR=1.10 IC[1.05;1.18]", "OR=0.90 IC[0.70;1.10]"], a: 1 },
+                { q: "Q18: La p-valeur est :", o: ["Probabilité d'observer les données par hasard si H0 est vraie", "La force clinique de l'effet", "La probabilité que H1 soit vraie"], a: 0 }
+            ]
+        };
+
+        let currentQuiz = [];
+        let currentIdx = 0;
+        let score = 0;
+
+        function showSection(section) {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('quiz-container').classList.add('hidden');
+            
+            if(section === 'home') {
+                document.getElementById('home').classList.remove('hidden');
+            } else {
+                startQuiz(section);
+            }
+        }
+
+        function startQuiz(type) {
+            currentQuiz = questions[type === 'quiz' ? 'chapitre' : 'annales'];
+            currentIdx = 0;
+            score = 0;
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('result-box').classList.add('hidden');
+            document.getElementById('question-box').classList.remove('hidden');
+            document.getElementById('quiz-title').innerText = type === 'quiz' ? "Quiz de Compréhension" : "Annales Pr. Balayé";
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = currentQuiz[currentIdx];
+            document.getElementById('question-text').innerText = q.q;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 border-2 border-gray-100 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition";
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(i);
+                container.appendChild(btn);
+            });
+            
+            const progress = ((currentIdx) / currentQuiz.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + "%";
+        }
+
+        function checkAnswer(idx) {
+            if(idx === currentQuiz[currentIdx].a) score++;
+            currentIdx++;
+            if(currentIdx < currentQuiz.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('question-box').classList.add('hidden');
+            document.getElementById('result-box').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = "100%";
+            const percent = Math.round((score / currentQuiz.length) * 100);
+            document.getElementById('final-score').innerText = `Score : ${score}/${currentQuiz.length} (${percent}%)`;
+        }
+    </script>
+</body>
+</html>
