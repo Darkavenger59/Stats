@@ -35,8 +35,8 @@
             <div id="global-score" class="text-6xl font-black text-indigo-600 mb-8">0%</div>
             <div id="module-stats" class="space-y-4 text-left"></div>
             
-            <button onclick="resetScores()" class="mt-12 bg-red-50 text-red-600 px-6 py-2 rounded-full text-sm font-bold hover:bg-red-100 transition border border-red-200">
-                Effacer mes scores et recommencer
+            <button onclick="resetScores()" class="mt-12 bg-red-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-red-700 transition">
+                RÉINITIALISER TOUS LES SCORES
             </button>
         </div>
     </section>
@@ -57,9 +57,9 @@
                 <button id="next-btn" class="w-full mt-8 bg-indigo-600 text-white py-4 rounded-xl font-bold hidden shadow-lg">Continuer</button>
             </div>
 
-            <div id="review-content" class="hidden text-center">
-                <h3 class="text-2xl font-bold mb-4 text-slate-800">Analyse de tes erreurs 🧐</h3>
-                <div id="errors-list" class="space-y-4 mb-8 text-left"></div>
+            <div id="review-content" class="hidden">
+                <h3 class="text-2xl font-bold mb-4">Analyse de tes erreurs 🧐</h3>
+                <div id="errors-list" class="space-y-4 mb-8"></div>
                 <button onclick="showSection('home')" class="w-full bg-gray-800 text-white py-4 rounded-xl font-bold">Retour à l'accueil</button>
             </div>
         </div>
@@ -73,50 +73,50 @@
                 { q: "Si p = 0.04, que décide-t-on au seuil de 5% ?", o: ["On conserve H0", "On rejette H0", "On ne peut pas conclure"], a: 1, e: "p < 0.05 signifie que le résultat est statistiquement significatif, on rejette l'hypothèse nulle." },
                 { q: "La médiane est l'indicateur qui :", o: ["Est le plus fréquent", "Partage la série en deux moitiés égales", "Est la moyenne arithmétique"], a: 1, e: "La médiane divise la population en 50% au-dessus et 50% en-dessous." },
                 { q: "Le test de corrélation de Pearson étudie :", o: ["Le lien entre 2 variables quantitatives", "La différence entre 2 moyennes", "La concordance"], a: 0, e: "Le coefficient 'r' mesure la force du lien linéaire entre deux variables numériques." },
-                { q: "H0 signifie généralement :", o: ["Il existe une différence", "Il n'existe pas de différence", "Le test est biaisé"], a: 1, e: "H0 est l'hypothèse de base : tout ce qu'on observe est dû au hasard." },
+                { q: "H0 signifie généralement :", o: ["Il existe une différence", "Il n'existe pas de différence", "Le test est biaisé"], a: 1, e: "H0 est l'hypothèse de base : tout ce qu'on observe est dû au hasard (pas de différence réelle)." },
                 { q: "L'écart-type mesure :", o: ["La position", "La dispersion", "La tendance centrale"], a: 1, e: "Il indique comment les données sont étalées autour de la moyenne." },
-                { q: "Une étude sur TOUTE la population s'appelle :", o: ["Un sondage", "Un échantillonnage", "Un recensement"], a: 2, e: "Le recensement étudie l'exhaustivité de la population." },
+                { q: "Une étude sur TOUTE la population s'appelle :", o: ["Un sondage", "Un échantillonnage", "Un recensement"], a: 2, e: "Le recensement (ex: INSEE) étudie l'exhaustivité de la population." },
                 { q: "Le risque Alpha (5%) est le risque de :", o: ["Rejeter H0 à tort", "Conserver H0 à tort"], a: 0, e: "C'est conclure à une différence qui n'existe pas en réalité." },
-                { q: "Une variable ordinale est une variable :", o: ["Quantitative", "Qualitative avec un ordre", "Binaire"], a: 1, e: "Exemple : Stade de la maladie (I, II, III). C'est ordonné." },
+                { q: "Une variable ordinale est une variable :", o: ["Quantitative", "Qualitative avec un ordre", "Binaire"], a: 1, e: "Exemple : Stade de la maladie (I, II, III). C'est une catégorie mais ordonnée." },
                 { q: "La variance est :", o: ["La racine carrée de l'écart-type", "Le carré de l'écart-type"], a: 1, e: "Mathématiquement, s² = variance." },
-                { q: "Le mode est :", o: ["La valeur la plus fréquente", "La valeur centrale", "La valeur la plus haute"], a: 0, e: "Le mode est la valeur associée au plus grand effectif." },
-                { q: "L'inférence statistique permet de :", o: ["Décrire l'échantillon", "Généraliser à la population", "Calculer la moyenne"], a: 1, e: "C'est passer de l'observation à la loi générale." },
-                { q: "Si r = -0.9, la corrélation est :", o: ["Nulle", "Forte et inverse", "Faible"], a: 1, e: "Proche de -1 ou 1 signifie une corrélation forte." },
-                { q: "Un échantillon doit être :", o: ["Le plus petit possible", "Représentatif", "Composé de volontaires"], a: 1, e: "La représentativité est cruciale pour l'inférence." }
+                { q: "Le mode est :", o: ["La valeur la plus fréquente", "La valeur centrale", "La valeur la plus haute"], a: 0, e: "Le mode est le sommet de la distribution (le plus grand effectif)." },
+                { q: "L'inférence statistique permet de :", o: ["Décrire l'échantillon", "Généraliser à la population", "Calculer la moyenne"], a: 1, e: "C'est passer de l'observation (échantillon) à la loi générale (population)." },
+                { q: "Si r = -0.9, la corrélation est :", o: ["Nulle", "Forte et inverse", "Faible"], a: 1, e: "Proche de -1 ou 1 signifie une corrélation forte. Le signe moins indique qu'une variable diminue quand l'autre augmente." },
+                { q: "Un échantillon doit être :", o: ["Le plus petit possible", "Représentatif", "Composé de volontaires"], a: 1, e: "La représentativité est la condition sine qua non de l'inférence." }
             ]},
             c2: { title: "Tests Diagnostiques", questions: [
-                { q: "Probabilité d'être T+ quand on est Malade :", o: ["VPP", "Sensibilité", "Spécificité"], a: 1, e: "Se = VP / (VP + FN). C'est détecter les vrais malades." },
-                { q: "La Spécificité est la probabilité :", o: ["D'être T- chez les non-malades", "D'être non-malade chez les T-"], a: 0, e: "Sp = VN / (VN + FP). C'est identifier les sujets sains." },
-                { q: "La VPP dépend de la prévalence :", o: ["Vrai", "Faux"], a: 0, e: "Plus la maladie est rare, plus la VPP chute." },
-                { q: "Le coefficient Kappa évalue :", o: ["La force d'un risque", "La concordance", "La moyenne"], a: 1, e: "Il compare l'accord observé à l'accord dû au hasard." },
-                { q: "Un Kappa de 0.85 est :", o: ["Moyen", "Excellent", "Négligeable"], a: 1, e: "Au-dessus de 0.80, c'est jugé excellent." },
-                { q: "La courbe ROC étudie :", o: ["Le lien Se / (1-Sp)", "Le lien VPP / VPN"], a: 0, e: "Elle permet de choisir le meilleur seuil décisionnel." },
-                { q: "L'aire sous la courbe (AUC) idéale est :", o: ["0.5", "1", "0"], a: 1, e: "Une AUC de 1 signifie que le test est parfait." },
-                { q: "Le Gold Standard est :", o: ["Le nouveau test", "La référence de vérité", "Un test de dépistage"], a: 1, e: "C'est l'examen de certitude (ex: biopsie)." },
-                { q: "Si on augmente le seuil de détection, la sensibilité :", o: ["Augmente", "Diminue"], a: 1, e: "En étant plus strict, on rate plus de malades, donc Se baisse." },
+                { q: "Probabilité d'être T+ quand on est Malade :", o: ["VPP", "Sensibilité", "Spécificité"], a: 1, e: "Se = VP / (VP + FN). C'est la capacité à détecter les malades." },
+                { q: "La Spécificité est la probabilité :", o: ["D'être T- chez les non-malades", "D'être non-malade chez les T-"], a: 0, e: "Sp = VN / (VN + FP). C'est la capacité à identifier les sujets sains." },
+                { q: "La VPP dépend de la prévalence :", o: ["Vrai", "Faux"], a: 0, e: "Plus la maladie est rare, plus la VPP chute (beaucoup de faux positifs)." },
+                { q: "Le coefficient Kappa évalue :", o: ["La force d'un risque", "La concordance", "La moyenne"], a: 1, e: "Il compare l'accord observé à l'accord dû au seul hasard." },
+                { q: "Un Kappa de 0.85 est :", o: ["Moyen", "Excellent", "Négligeable"], a: 1, e: "Au-dessus de 0.80, la concordance est jugée excellente." },
+                { q: "La courbe ROC étudie :", o: ["Le lien Se / (1-Sp)", "Le lien VPP / VPN"], a: 0, e: "Elle permet de choisir le meilleur seuil décisionnel pour un test." },
+                { q: "L'aire sous la courbe (AUC) d'un test parfait est :", o: ["0.5", "1", "0"], a: 1, e: "Une AUC de 1 signifie que le test ne se trompe jamais." },
+                { q: "Le Gold Standard est :", o: ["Le nouveau test", "La référence de vérité", "Un test de dépistage"], a: 1, e: "C'est l'examen qui permet de dire avec certitude si le patient est malade (ex: biopsie)." },
+                { q: "Si on augmente le seuil de détection, la sensibilité :", o: ["Augmente", "Diminue"], a: 1, e: "En étant plus 'sévère', on rate plus de malades, donc la Se baisse mais la Sp augmente." },
                 { q: "La VPN est la probabilité d'être sain si :", o: ["Le test est négatif", "Le test est positif"], a: 0, e: "VPN = Probabilité(M- | T-)." },
-                { q: "Un test avec une Se de 100% n'a aucun :", o: ["Faux positif", "Faux négatif"], a: 1, e: "Il détecte TOUS les malades sans exception." },
-                { q: "Le Kappa de 0 signifie :", o: ["Accord parfait", "Accord dû au hasard", "Désaccord total"], a: 1, e: "Zéro indique un accord uniquement lié au hasard." },
-                { q: "La prévalence est :", o: ["Le nombre de nouveaux cas", "La proportion de malades à un instant T"], a: 1, e: "C'est un indicateur statique de fréquence." },
-                { q: "Pour un dépistage, on privilégie :", o: ["La sensibilité", "La spécificité"], a: 0, e: "On veut ne rater aucun cas (haute Se)." },
-                { q: "La validité intrinsèque regroupe :", o: ["Se et Sp", "VPP et VPN"], a: 0, e: "Elles ne dépendent pas de la prévalence." }
+                { q: "Un test avec une Se de 100% n'a aucun :", o: ["Faux positif", "Faux négatif"], a: 1, e: "S'il détecte TOUS les malades, il ne peut pas dire 'sain' à quelqu'un de malade." },
+                { q: "Le Kappa de 0 signifie :", o: ["Accord parfait", "Accord dû au hasard", "Désaccord total"], a: 1, e: "Zéro indique que les deux juges ne sont pas plus d'accord que s'ils avaient répondu au pif." },
+                { q: "La prévalence est :", o: ["Le nombre de nouveaux cas", "La proportion de malades à un instant T"], a: 1, e: "C'est un indicateur statique." },
+                { q: "Pour un dépistage, on privilégie :", o: ["La sensibilité", "La spécificité"], a: 0, e: "On veut ne rater aucun cas, quitte à avoir des faux positifs à confirmer plus tard." },
+                { q: "La validité intrinsèque regroupe :", o: ["Se et Sp", "VPP et VPN"], a: 0, e: "Elles ne dépendent pas de la prévalence de la maladie." }
             ]},
             c3: { title: "Épidémiologie", questions: [
                 { q: "L'incidence mesure :", o: ["Les anciens cas", "Les nouveaux cas par unité de temps"], a: 1, e: "C'est une notion de flux (dynamique)." },
-                { q: "Le Risque Relatif (RR) se calcule dans :", o: ["Étude Cas-Témoins", "Étude de Cohorte"], a: 1, e: "Il faut suivre les gens dans le temps." },
-                { q: "L'Odds Ratio (OR) est utilisé quand :", o: ["On part de la maladie (Cas-Témoins)", "On part de l'exposition"], a: 0, e: "C'est l'indicateur pour les maladies rares." },
-                { q: "RR = 1 signifie :", o: ["Risque doublé", "Pas d'association", "Facteur protecteur"], a: 1, e: "Pas de différence entre exposés et non-exposés." },
-                { q: "Si IC 95% du RR est [1.2 ; 3.4] :", o: ["C'est significatif", "Ce n'est pas significatif"], a: 0, e: "L'intervalle ne contient pas 1." },
-                { q: "L'étude transversale étudie :", o: ["L'incidence", "La prévalence"], a: 1, e: "C'est une photo à un instant T." },
+                { q: "Le Risque Relatif (RR) se calcule dans :", o: ["Étude Cas-Témoins", "Étude de Cohorte"], a: 1, e: "Il faut suivre les gens dans le temps pour voir l'apparition de la maladie." },
+                { q: "L'Odds Ratio (OR) est utilisé quand :", o: ["On part de la maladie (Cas-Témoins)", "On part de l'exposition"], a: 0, e: "C'est l'indicateur de choix pour les maladies rares." },
+                { q: "RR = 1 signifie :", o: ["Risque doublé", "Pas d'association", "Facteur protecteur"], a: 1, e: "Le risque chez les exposés est le même que chez les non-exposés." },
+                { q: "Si IC 95% du RR est [1.2 ; 3.4] :", o: ["C'est significatif", "Ce n'est pas significatif"], a: 0, e: "L'intervalle ne contient pas la valeur 1, donc le risque est réel." },
+                { q: "L'étude transversale étudie :", o: ["L'incidence", "La prévalence"], a: 1, e: "C'est une 'photographie' à un moment donné." },
                 { q: "Un facteur de risque a un RR :", o: ["> 1", "< 1"], a: 0, e: "L'exposition augmente la probabilité de maladie." },
-                { q: "Le biais de confusion se limite par :", o: ["L'augmentation de l'échantillon", "La randomisation"], a: 1, e: "Répartir au hasard équilibre les facteurs." },
-                { q: "L'épidémiologie étiologique cherche à :", o: ["Décrire", "Chercher les causes"], a: 1, e: "Elle cherche les liens de causalité." },
-                { q: "Une étude de cohorte est :", o: ["Rétrospective", "Prospective"], a: 1, e: "On suit les sujets vers le futur." },
-                { q: "Un OR = 0.5 signifie :", o: ["Risque multiplié par 2", "Effet protecteur"], a: 1, e: "< 1 indique une protection." },
-                { q: "L'étude Cas-Témoins est :", o: ["Rapide et moins chère", "Longue et chère"], a: 0, e: "Adaptée aux maladies à longue latence." },
-                { q: "Le taux de mortalité est :", o: ["Morts / Population totale", "Morts / Nombre de malades"], a: 0, e: "À ne pas confondre avec la létalité." },
-                { q: "La randomisation est propre à :", o: ["L'étude observationnelle", "L'essai clinique"], a: 1, e: "C'est l'expérimentateur qui répartit l'exposition." },
-                { q: "Q18 Balayé : La p-valeur est :", o: ["La probabilité d'erreur", "La probabilité d'observer les données sous H0"], a: 1, e: "Force de la preuve contre l'hypothèse nulle." }
+                { q: "Le biais de confusion peut être limité par :", o: ["L'augmentation de l'échantillon", "La randomisation"], a: 1, e: "Répartir au hasard permet d'équilibrer les facteurs inconnus entre les groupes." },
+                { q: "L'épidémiologie étiologique sert à :", o: ["Compter les cas", "Chercher les causes"], a: 1, e: "Elle cherche les liens de causalité entre exposition et maladie." },
+                { q: "Une étude de cohorte est :", o: ["Rétrospective", "Prospective"], a: 1, e: "On suit les sujets du présent vers le futur." },
+                { q: "Un OR = 0.5 signifie :", o: ["Risque multiplié par 2", "Effet protecteur (50% de risque en moins)"], a: 1, e: "< 1 indique une protection." },
+                { q: "L'étude Cas-Témoins est :", o: ["Moins coûteuse et rapide", "Longue et chère"], a: 0, e: "Puisque les gens sont déjà malades, on gagne du temps." },
+                { q: "Le taux de mortalité est :", o: ["Nombre de morts / Population totale", "Nombre de morts / Nombre de malades"], a: 0, e: "À ne pas confondre avec la létalité (morts/malades)." },
+                { q: "La randomisation est le propre de :", o: ["L'étude observationnelle", "L'essai clinique"], a: 1, e: "C'est l'expérimentateur qui décide de l'exposition." },
+                { q: "Q18 Balayé : La p-valeur est :", o: ["La probabilité d'erreur", "La probabilité d'observer les données sous H0"], a: 1, e: "C'est la mesure de la force de la preuve contre H0." }
             ]}
         };
 
@@ -125,8 +125,8 @@
         let score = 0;
         let userErrors = [];
         
-        // CHARGEMENT INITIAL DES SCORES
-        let scoresSaved = JSON.parse(localStorage.getItem('stats_v3')) || { c1: 0, c2: 0, c3: 0 };
+        // GESTION DES SCORES
+        let scoresSaved = JSON.parse(localStorage.getItem('stats_vfinal')) || { c1: 0, c2: 0, c3: 0 };
 
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
@@ -215,20 +215,20 @@
             const p = Math.round((score / 15) * 100);
             if(p > (scoresSaved[currentModule] || 0)) {
                 scoresSaved[currentModule] = p;
-                localStorage.setItem('stats_v3', JSON.stringify(scoresSaved));
+                localStorage.setItem('stats_vfinal', JSON.stringify(scoresSaved));
             }
             
             document.getElementById('quiz-content').classList.add('hidden');
             document.getElementById('review-content').classList.remove('hidden');
             
             const errList = document.getElementById('errors-list');
-            errList.innerHTML = userErrors.length === 0 ? "<p class='text-green-600 font-bold'>Zéro faute ! Tu maîtrises parfaitement ce chapitre.</p>" : "";
+            errList.innerHTML = userErrors.length === 0 ? "<p class='text-green-600 font-bold text-center'>Félicitations ! Aucune erreur.</p>" : "";
             
             userErrors.forEach(err => {
                 errList.innerHTML += `
                     <div class="p-4 bg-red-50 rounded-xl border-l-4 border-red-400">
                         <p class="font-bold text-gray-800 text-sm">${err.q}</p>
-                        <p class="text-xs text-green-700 font-bold mt-1">✓ Réponse correcte : ${err.correct}</p>
+                        <p class="text-xs text-green-700 font-bold mt-1">✓ Correction : ${err.correct}</p>
                         <p class="text-xs text-gray-600 italic mt-1">${err.expl}</p>
                     </div>`;
             });
@@ -253,18 +253,17 @@
             });
         }
 
-        // FONCTION DE RÉINITIALISATION
+        // FONCTION DE RESET
         function resetScores() {
-            if (confirm("Es-tu sûr de vouloir effacer tous tes scores ?")) {
-                localStorage.removeItem('stats_v3');
+            if(confirm("Veux-tu vraiment effacer toute ta progression ?")) {
+                localStorage.clear();
                 scoresSaved = { c1: 0, c2: 0, c3: 0 };
                 renderStats();
                 renderModules();
-                alert("Scores réinitialisés.");
+                alert("Scores effacés !");
             }
         }
 
-        // LANCEMENT
         showSection('home');
     </script>
 </body>
