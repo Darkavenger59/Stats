@@ -35,6 +35,10 @@
             <div id="global-score" class="text-6xl font-black text-indigo-600 mb-8">0%</div>
             <div id="module-stats" class="space-y-4 text-left"></div>
             <button onclick="clearProgress()" class="mt-8 text-red-500 text-sm underline">Réinitialiser mes données</button>
+            <button onclick="resetScores()" class="mt-8 text-red-500 text-xs underline hover:text-red-700 transition">
+    Réinitialiser mes statistiques
+            </button>
+            
         </div>
     </section>
 
@@ -246,6 +250,22 @@
         function clearProgress() { if(confirm("Effacer tes scores ?")) { localStorage.clear(); location.reload(); } }
 
         showSection('home');
+        function resetScores() {
+    if (confirm("Es-tu sûr de vouloir effacer tous tes scores ? Cette action est irréversible.")) {
+        // On supprime la clé de stockage
+        localStorage.removeItem('stats_pro_v5'); 
+        
+        // On remet les scores locaux à zéro
+        scores = { c1: 0, c2: 0, c3: 0 };
+        
+        // On rafraîchit l'affichage
+        renderStats();
+        renderHome();
+        
+        alert("Scores réinitialisés !");
+    }
+        }
+        
     </script>
 </body>
 </html>
