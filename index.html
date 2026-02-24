@@ -26,7 +26,7 @@
 
     <section id="home" class="container mx-auto p-6">
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Modules d'Entraînement</h2>
-        <div class="grid md:grid-cols-3 gap-6" id="module-grid"></div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="module-grid"></div>
     </section>
 
     <section id="stats-section" class="container mx-auto p-6 hidden">
@@ -58,7 +58,7 @@
             </div>
 
             <div id="review-content" class="hidden">
-                <h3 class="text-2xl font-bold mb-4">Analyse de tes erreurs 🧐</h3>
+                <h3 class="text-2xl font-bold mb-4 text-center">Analyse de tes erreurs 🧐</h3>
                 <div id="errors-list" class="space-y-4 mb-8"></div>
                 <button onclick="showSection('home')" class="w-full bg-gray-800 text-white py-4 rounded-xl font-bold">Retour à l'accueil</button>
             </div>
@@ -67,56 +67,83 @@
 
     <script>
         const db = {
-            c1: { title: "Introduction Statistique", questions: [
+            // --- BLOC 1 : INTRODUCTION STATISTIQUE ---
+            c1: { title: "Introduction Statistique (Basique)", questions: [
                 { q: "Quelle est la définition de la statistique ?", o: ["La science du recueil et de l'analyse", "L'ensemble des chiffres d'une étude", "Une probabilité"], a: 0, e: "La statistique est la science, tandis que LES statistiques sont les résultats chiffrés." },
                 { q: "Une variable 'Taille en cm' est :", o: ["Qualitative", "Quantitative discrète", "Quantitative continue"], a: 2, e: "Une mesure physique comme la taille peut prendre une infinité de valeurs, elle est continue." },
                 { q: "Si p = 0.04, que décide-t-on au seuil de 5% ?", o: ["On conserve H0", "On rejette H0", "On ne peut pas conclure"], a: 1, e: "p < 0.05 signifie que le résultat est statistiquement significatif, on rejette l'hypothèse nulle." },
                 { q: "La médiane est l'indicateur qui :", o: ["Est le plus fréquent", "Partage la série en deux moitiés égales", "Est la moyenne arithmétique"], a: 1, e: "La médiane divise la population en 50% au-dessus et 50% en-dessous." },
                 { q: "Le test de corrélation de Pearson étudie :", o: ["Le lien entre 2 variables quantitatives", "La différence entre 2 moyennes", "La concordance"], a: 0, e: "Le coefficient 'r' mesure la force du lien linéaire entre deux variables numériques." },
-                { q: "H0 signifie généralement :", o: ["Il existe une différence", "Il n'existe pas de différence", "Le test est biaisé"], a: 1, e: "H0 est l'hypothèse de base : tout ce qu'on observe est dû au hasard (pas de différence réelle)." },
+                { q: "H0 signifie généralement :", o: ["Il existe une différence", "Il n'existe pas de différence", "Le test est biaisé"], a: 1, e: "H0 est l'hypothèse de base : tout ce qu'on observe est dû au hasard." },
                 { q: "L'écart-type mesure :", o: ["La position", "La dispersion", "La tendance centrale"], a: 1, e: "Il indique comment les données sont étalées autour de la moyenne." },
-                { q: "Une étude sur TOUTE la population s'appelle :", o: ["Un sondage", "Un échantillonnage", "Un recensement"], a: 2, e: "Le recensement (ex: INSEE) étudie l'exhaustivité de la population." },
+                { q: "Une étude sur TOUTE la population s'appelle :", o: ["Un sondage", "Un échantillonnage", "Un recensement"], a: 2, e: "Le recensement étudie l'exhaustivité de la population." },
                 { q: "Le risque Alpha (5%) est le risque de :", o: ["Rejeter H0 à tort", "Conserver H0 à tort"], a: 0, e: "C'est conclure à une différence qui n'existe pas en réalité." },
-                { q: "Une variable ordinale est une variable :", o: ["Quantitative", "Qualitative avec un ordre", "Binaire"], a: 1, e: "Exemple : Stade de la maladie (I, II, III). C'est une catégorie mais ordonnée." },
-                { q: "La variance est :", o: ["La racine carrée de l'écart-type", "Le carré de l'écart-type"], a: 1, e: "Mathématiquement, s² = variance." },
-                { q: "Le mode est :", o: ["La valeur la plus fréquente", "La valeur centrale", "La valeur la plus haute"], a: 0, e: "Le mode est le sommet de la distribution (le plus grand effectif)." },
-                { q: "L'inférence statistique permet de :", o: ["Décrire l'échantillon", "Généraliser à la population", "Calculer la moyenne"], a: 1, e: "C'est passer de l'observation (échantillon) à la loi générale (population)." },
-                { q: "Si r = -0.9, la corrélation est :", o: ["Nulle", "Forte et inverse", "Faible"], a: 1, e: "Proche de -1 ou 1 signifie une corrélation forte. Le signe moins indique qu'une variable diminue quand l'autre augmente." },
-                { q: "Un échantillon doit être :", o: ["Le plus petit possible", "Représentatif", "Composé de volontaires"], a: 1, e: "La représentativité est la condition sine qua non de l'inférence." }
+                { q: "Une variable ordinale est une variable :", o: ["Quantitative", "Qualitative avec un ordre", "Binaire"], a: 1, e: "Exemple : Stade de la maladie (I, II, III). C'est ordonné." }
             ]},
-            c2: { title: "Tests Diagnostiques", questions: [
-                { q: "Probabilité d'être T+ quand on est Malade :", o: ["VPP", "Sensibilité", "Spécificité"], a: 1, e: "Se = VP / (VP + FN). C'est la capacité à détecter les malades." },
-                { q: "La Spécificité est la probabilité :", o: ["D'être T- chez les non-malades", "D'être non-malade chez les T-"], a: 0, e: "Sp = VN / (VN + FP). C'est la capacité à identifier les sujets sains." },
-                { q: "La VPP dépend de la prévalence :", o: ["Vrai", "Faux"], a: 0, e: "Plus la maladie est rare, plus la VPP chute (beaucoup de faux positifs)." },
-                { q: "Le coefficient Kappa évalue :", o: ["La force d'un risque", "La concordance", "La moyenne"], a: 1, e: "Il compare l'accord observé à l'accord dû au seul hasard." },
+            // --- BLOC 2 : TESTS DIAGNOSTIQUES ---
+            c2: { title: "Tests Diagnostiques (Basique)", questions: [
+                { q: "Probabilité d'être T+ quand on est Malade :", o: ["VPP", "Sensibilité", "Spécificité"], a: 1, e: "Se = VP / (VP + FN). C'est détecter les malades." },
+                { q: "La Spécificité est la probabilité :", o: ["D'être T- chez les non-malades", "D'être non-malade chez les T-"], a: 0, e: "Sp = VN / (VN + FP). C'est identifier les sujets sains." },
+                { q: "La VPP dépend de la prévalence :", o: ["Vrai", "Faux"], a: 0, e: "Plus la maladie est rare, plus la VPP chute." },
+                { q: "Le coefficient Kappa évalue :", o: ["La force d'un risque", "La concordance", "La moyenne"], a: 1, e: "Il compare l'accord observé à l'accord dû au hasard." },
                 { q: "Un Kappa de 0.85 est :", o: ["Moyen", "Excellent", "Négligeable"], a: 1, e: "Au-dessus de 0.80, la concordance est jugée excellente." },
-                { q: "La courbe ROC étudie :", o: ["Le lien Se / (1-Sp)", "Le lien VPP / VPN"], a: 0, e: "Elle permet de choisir le meilleur seuil décisionnel pour un test." },
+                { q: "La courbe ROC étudie :", o: ["Le lien Se / (1-Sp)", "Le lien VPP / VPN"], a: 0, e: "Elle permet de choisir le meilleur seuil décisionnel." },
                 { q: "L'aire sous la courbe (AUC) d'un test parfait est :", o: ["0.5", "1", "0"], a: 1, e: "Une AUC de 1 signifie que le test ne se trompe jamais." },
-                { q: "Le Gold Standard est :", o: ["Le nouveau test", "La référence de vérité", "Un test de dépistage"], a: 1, e: "C'est l'examen qui permet de dire avec certitude si le patient est malade (ex: biopsie)." },
-                { q: "Si on augmente le seuil de détection, la sensibilité :", o: ["Augmente", "Diminue"], a: 1, e: "En étant plus 'sévère', on rate plus de malades, donc la Se baisse mais la Sp augmente." },
-                { q: "La VPN est la probabilité d'être sain si :", o: ["Le test est négatif", "Le test est positif"], a: 0, e: "VPN = Probabilité(M- | T-)." },
-                { q: "Un test avec une Se de 100% n'a aucun :", o: ["Faux positif", "Faux négatif"], a: 1, e: "S'il détecte TOUS les malades, il ne peut pas dire 'sain' à quelqu'un de malade." },
-                { q: "Le Kappa de 0 signifie :", o: ["Accord parfait", "Accord dû au hasard", "Désaccord total"], a: 1, e: "Zéro indique que les deux juges ne sont pas plus d'accord que s'ils avaient répondu au pif." },
-                { q: "La prévalence est :", o: ["Le nombre de nouveaux cas", "La proportion de malades à un instant T"], a: 1, e: "C'est un indicateur statique." },
-                { q: "Pour un dépistage, on privilégie :", o: ["La sensibilité", "La spécificité"], a: 0, e: "On veut ne rater aucun cas, quitte à avoir des faux positifs à confirmer plus tard." },
-                { q: "La validité intrinsèque regroupe :", o: ["Se et Sp", "VPP et VPN"], a: 0, e: "Elles ne dépendent pas de la prévalence de la maladie." }
+                { q: "Le Gold Standard est :", o: ["Le nouveau test", "La référence de vérité", "Un test de dépistage"], a: 1, e: "C'est l'examen de certitude (ex: biopsie)." },
+                { q: "Si on augmente le seuil de détection, la sensibilité :", o: ["Augmente", "Diminue"], a: 1, e: "En étant plus strict, on rate plus de malades, donc Se baisse." },
+                { q: "La VPN est la probabilité d'être sain si :", o: ["Le test est négatif", "Le test est positif"], a: 0, e: "VPN = Probabilité(M- | T-)." }
             ]},
-            c3: { title: "Épidémiologie", questions: [
+            // --- BLOC 3 : ÉPIDÉMIOLOGIE ---
+            c3: { title: "Épidémiologie (Basique)", questions: [
                 { q: "L'incidence mesure :", o: ["Les anciens cas", "Les nouveaux cas par unité de temps"], a: 1, e: "C'est une notion de flux (dynamique)." },
-                { q: "Le Risque Relatif (RR) se calcule dans :", o: ["Étude Cas-Témoins", "Étude de Cohorte"], a: 1, e: "Il faut suivre les gens dans le temps pour voir l'apparition de la maladie." },
-                { q: "L'Odds Ratio (OR) est utilisé quand :", o: ["On part de la maladie (Cas-Témoins)", "On part de l'exposition"], a: 0, e: "C'est l'indicateur de choix pour les maladies rares." },
-                { q: "RR = 1 signifie :", o: ["Risque doublé", "Pas d'association", "Facteur protecteur"], a: 1, e: "Le risque chez les exposés est le même que chez les non-exposés." },
-                { q: "Si IC 95% du RR est [1.2 ; 3.4] :", o: ["C'est significatif", "Ce n'est pas significatif"], a: 0, e: "L'intervalle ne contient pas la valeur 1, donc le risque est réel." },
+                { q: "Le Risque Relatif (RR) se calcule dans :", o: ["Étude Cas-Témoins", "Étude de Cohorte"], a: 1, e: "Il faut suivre les gens dans le temps." },
+                { q: "L'Odds Ratio (OR) est utilisé quand :", o: ["On part de la maladie (Cas-Témoins)", "On part de l'exposition"], a: 0, e: "C'est l'indicateur pour les maladies rares." },
+                { q: "RR = 1 signifie :", o: ["Risque doublé", "Pas d'association", "Facteur protecteur"], a: 1, e: "Le risque chez les exposés est le même." },
+                { q: "Si IC 95% du RR est [1.2 ; 3.4] :", o: ["C'est significatif", "Ce n'est pas significatif"], a: 0, e: "L'intervalle ne contient pas 1, donc le risque est réel." },
                 { q: "L'étude transversale étudie :", o: ["L'incidence", "La prévalence"], a: 1, e: "C'est une 'photographie' à un moment donné." },
                 { q: "Un facteur de risque a un RR :", o: ["> 1", "< 1"], a: 0, e: "L'exposition augmente la probabilité de maladie." },
-                { q: "Le biais de confusion peut être limité par :", o: ["L'augmentation de l'échantillon", "La randomisation"], a: 1, e: "Répartir au hasard permet d'équilibrer les facteurs inconnus entre les groupes." },
-                { q: "L'épidémiologie étiologique sert à :", o: ["Compter les cas", "Chercher les causes"], a: 1, e: "Elle cherche les liens de causalité entre exposition et maladie." },
-                { q: "Une étude de cohorte est :", o: ["Rétrospective", "Prospective"], a: 1, e: "On suit les sujets du présent vers le futur." },
-                { q: "Un OR = 0.5 signifie :", o: ["Risque multiplié par 2", "Effet protecteur (50% de risque en moins)"], a: 1, e: "< 1 indique une protection." },
-                { q: "L'étude Cas-Témoins est :", o: ["Moins coûteuse et rapide", "Longue et chère"], a: 0, e: "Puisque les gens sont déjà malades, on gagne du temps." },
-                { q: "Le taux de mortalité est :", o: ["Nombre de morts / Population totale", "Nombre de morts / Nombre de malades"], a: 0, e: "À ne pas confondre avec la létalité (morts/malades)." },
-                { q: "La randomisation est le propre de :", o: ["L'étude observationnelle", "L'essai clinique"], a: 1, e: "C'est l'expérimentateur qui décide de l'exposition." },
-                { q: "Q18 Balayé : La p-valeur est :", o: ["La probabilité d'erreur", "La probabilité d'observer les données sous H0"], a: 1, e: "C'est la mesure de la force de la preuve contre H0." }
+                { q: "Le biais de confusion se limite par :", o: ["L'augmentation de l'échantillon", "La randomisation"], a: 1, e: "Répartir au hasard équilibre les facteurs." },
+                { q: "L'épidémiologie étiologique sert à :", o: ["Compter les cas", "Chercher les causes"], a: 1, e: "Elle cherche les liens de causalité." },
+                { q: "Une étude de cohorte est :", o: ["Rétrospective", "Prospective"], a: 1, e: "On suit les sujets du présent vers le futur." }
+            ]},
+            // --- NOUVEAU BLOC 4 : APPROFONDISSEMENT STATS ---
+            c4: { title: "Stats : Formatage & Recueil", questions: [
+                { q: "Dans un fichier de données propre (Excel), chaque ligne doit être :", o: ["Une variable", "Un individu statistique", "Une moyenne"], a: 1, e: "C'est la règle d'or : une ligne = un patient/sujet." },
+                { q: "Pour une analyse stat, quel format de fichier est proscrit ?", o: ["XLSX", "PDF", "CSV"], a: 1, e: "Le PDF ne permet pas le traitement automatique des données." },
+                { q: "Une variable 'Sexe' (H/F) est :", o: ["Qualitative nominale binaire", "Qualitative ordinale", "Quantitative"], a: 0, e: "Deux catégories sans ordre particulier." },
+                { q: "L'onglet 'Variables' (Codebook) sert à :", o: ["Stocker les noms des patients", "Définir le type et le sens des colonnes", "Faire les graphiques"], a: 1, e: "Il sert de dictionnaire pour l'analyste." },
+                { q: "Comment traite-t-on les cellules fusionnées en statistique ?", o: ["On les adore", "On les interdit strictement", "C'est optionnel"], a: 1, e: "Les cellules fusionnées empêchent l'analyse par les logiciels." },
+                { q: "La statistique descriptive univariée étudie :", o: ["Le lien entre 2 variables", "Une seule variable à la fois", "L'extrapolation"], a: 1, e: "Ex: Moyenne d'âge ou % d'hommes." },
+                { q: "Quelle représentation pour une variable qualitative ?", o: ["Histogramme", "Diagramme circulaire", "Nuage de points"], a: 1, e: "Le 'camembert' ou les barres sont adaptés aux catégories." },
+                { q: "Le mode d'une classe (ex: [20-30]) est :", o: ["Le milieu de la classe (25)", "La borne haute (30)", "La borne basse (20)"], a: 0, e: "On prend le centre de l'intervalle par convention." },
+                { q: "L'échantillonnage aléatoire simple permet :", o: ["De choisir ses amis", "Une représentativité théorique", "De gagner du temps"], a: 1, e: "Le hasard pur évite les biais de sélection." },
+                { q: "Un plan d'analyse statistique se rédige :", o: ["Avant le recueil des données", "Après l'analyse", "Pendant la publication"], a: 0, e: "On décide de ce qu'on va tester AVANT de regarder les résultats." }
+            ]},
+            // --- NOUVEAU BLOC 5 : APPROFONDISSEMENT DIAGNOSTIC ---
+            c5: { title: "Diagnostic : Courbe ROC & Kappa", questions: [
+                { q: "Sur une courbe ROC, plus l'aire (AUC) est proche de 1 :", o: ["Plus le test est mauvais", "Plus le test est performant", "Plus le test est cher"], a: 1, e: "1 = Discrimination parfaite." },
+                { q: "La diagonale sur une courbe ROC représente :", o: ["Un test parfait", "Le hasard pur (AUC = 0.5)", "La p-valeur"], a: 1, e: "C'est le niveau d'un test inutile." },
+                { q: "Pour augmenter la Sensibilité d'un test continu, il faut :", o: ["Baisser le seuil", "Monter le seuil", "Ne rien changer"], a: 0, e: "En baissant le seuil, on 'ratisse' plus large et on rate moins de malades." },
+                { q: "Le Kappa de Cohen retire de l'accord observé :", o: ["Les erreurs", "L'accord dû au hasard", "Les cas rares"], a: 1, e: "C'est ce qui le rend plus robuste qu'un simple % d'accord." },
+                { q: "Un Kappa de 0.30 est considéré comme :", o: ["Excellent", "Faible", "Négatif"], a: 1, e: "Entre 0.2 et 0.4, la concordance est faible." },
+                { q: "La reproductibilité est évaluée par :", o: ["La sensibilité", "La concordance", "La prévalence"], a: 1, e: "C'est la capacité à donner le même résultat plusieurs fois." },
+                { q: "Le Gold Standard est toujours :", o: ["Le test le moins cher", "La référence de vérité", "Le test le plus rapide"], a: 1, e: "Ex: La biopsie pour un cancer." },
+                { q: "Si on veut rater ZERO malades (dépistage), on veut :", o: ["Se = 100%", "Sp = 100%", "VPP = 100%"], a: 0, e: "La sensibilité est la priorité du dépistage." },
+                { q: "La valeur prédictive négative (VPN) augmente si :", o: ["La maladie est rare", "La maladie est fréquente"], a: 0, e: "Moins il y a de malades, plus il est facile d'être sûr qu'un test négatif est vrai." },
+                { q: "Un test avec AUC = 0.8 est qualifié de :", o: ["Médiocre", "Bon", "Parfait"], a: 1, e: "C'est un test tout à fait honorable en clinique." }
+            ]},
+            // --- NOUVEAU BLOC 6 : APPROFONDISSEMENT ÉPIDÉMIO ---
+            c6: { title: "Épidémio : Risques & Biais", questions: [
+                { q: "John Snow a identifié la source du Choléra en :", o: ["Analysant l'air", "Cartographiant les cas", "Utilisant un microscope"], a: 1, e: "Il a fait de l'épidémiologie spatiale à Londres." },
+                { q: "Un ratio (ex: Sex-ratio) se définit par :", o: ["Numérateur inclus dans dénominateur", "Numérateur et dénominateur distincts"], a: 1, e: "Ex: 10 Hommes / 5 Femmes." },
+                { q: "La mortalité mesure les décès rapportés à :", o: ["La population totale", "Le nombre de malades"], a: 0, e: "Rapporté aux malades, c'est la létalité." },
+                { q: "Une étude transversale permet d'estimer :", o: ["L'incidence", "La prévalence", "Le RR"], a: 1, e: "C'est une 'photo' à un instant T." },
+                { q: "L'Odds Ratio (OR) est proche du RR si :", o: ["La maladie est fréquente", "La maladie est rare"], a: 1, e: "Condition d'approximation pour les maladies rares." },
+                { q: "Un OR = 2.5 avec IC95% [0.8 ; 4.2] est :", o: ["Significatif", "Non significatif"], a: 1, e: "L'intervalle contient 1, on ne peut pas rejeter H0." },
+                { q: "Le biais de mémorisation touche surtout les études :", o: ["Prospectives", "Rétrospectives (Cas-Témoins)"], a: 1, e: "Les gens oublient leurs expositions passées." },
+                { q: "La randomisation sert à :", o: ["Augmenter l'échantillon", "Équilibrer les facteurs de confusion"], a: 1, e: "Elle rend les groupes comparables au départ." },
+                { q: "L'incidence est une mesure de :", o: ["Stock", "Flux"], a: 1, e: "C'est la vitesse d'apparition de nouveaux cas." },
+                { q: "L'épidémiologie descriptive répond à :", o: ["Pourquoi ?", "Qui, où, quand ?"], a: 1, e: "Elle décrit sans chercher la causalité." }
             ]}
         };
 
@@ -124,9 +151,7 @@
         let currentIdx = 0;
         let score = 0;
         let userErrors = [];
-        
-        // GESTION DES SCORES
-        let scoresSaved = JSON.parse(localStorage.getItem('stats_vfinal')) || { c1: 0, c2: 0, c3: 0 };
+        let scoresSaved = JSON.parse(localStorage.getItem('stats_ue27_v2')) || {};
 
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
@@ -141,12 +166,12 @@
             Object.keys(db).forEach(key => {
                 const s = scoresSaved[key] || 0;
                 grid.innerHTML += `
-                    <div onclick="startQuiz('${key}')" class="bg-white p-6 rounded-3xl shadow-md border-b-8 ${s > 70 ? 'border-green-400' : 'border-indigo-400'} cursor-pointer card-hover">
-                        <h3 class="font-bold text-xl mb-1">${db[key].title}</h3>
-                        <p class="text-gray-500 text-sm mb-4">15 Questions</p>
+                    <div onclick="startQuiz('${key}')" class="bg-white p-6 rounded-3xl shadow-md border-b-8 ${s > 70 ? 'border-green-400' : 'border-indigo-400'} cursor-pointer card-hover transition">
+                        <h3 class="font-bold text-lg mb-1">${db[key].title}</h3>
+                        <p class="text-gray-500 text-xs mb-4">10 Questions</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-black px-2 py-1 rounded bg-slate-100">${s}% réussi</span>
-                            <span class="text-indigo-600 font-bold">Lancer →</span>
+                            <span class="text-indigo-600 font-bold text-sm">Lancer →</span>
                         </div>
                     </div>`;
             });
@@ -166,7 +191,7 @@
         function loadQuestion() {
             const q = db[currentModule].questions[currentIdx];
             document.getElementById('quiz-title').innerText = db[currentModule].title;
-            document.getElementById('progress-text').innerText = `${currentIdx + 1} / 15`;
+            document.getElementById('progress-text').innerText = `${currentIdx + 1} / 10`;
             document.getElementById('question-text').innerText = q.q;
             document.getElementById('explanation-box').classList.add('hidden');
             document.getElementById('next-btn').classList.add('hidden');
@@ -204,67 +229,4 @@
             document.getElementById('explanation-box').classList.remove('hidden');
             document.getElementById('next-btn').classList.remove('hidden');
             for(let b of btns) b.disabled = true;
-        }
-
-        document.getElementById('next-btn').onclick = () => {
-            currentIdx++;
-            if(currentIdx < 15) loadQuestion(); else finish();
-        };
-
-        function finish() {
-            const p = Math.round((score / 15) * 100);
-            if(p > (scoresSaved[currentModule] || 0)) {
-                scoresSaved[currentModule] = p;
-                localStorage.setItem('stats_vfinal', JSON.stringify(scoresSaved));
-            }
-            
-            document.getElementById('quiz-content').classList.add('hidden');
-            document.getElementById('review-content').classList.remove('hidden');
-            
-            const errList = document.getElementById('errors-list');
-            errList.innerHTML = userErrors.length === 0 ? "<p class='text-green-600 font-bold text-center'>Félicitations ! Aucune erreur.</p>" : "";
-            
-            userErrors.forEach(err => {
-                errList.innerHTML += `
-                    <div class="p-4 bg-red-50 rounded-xl border-l-4 border-red-400">
-                        <p class="font-bold text-gray-800 text-sm">${err.q}</p>
-                        <p class="text-xs text-green-700 font-bold mt-1">✓ Correction : ${err.correct}</p>
-                        <p class="text-xs text-gray-600 italic mt-1">${err.expl}</p>
-                    </div>`;
-            });
-        }
-
-        function renderStats() {
-            const s1 = scoresSaved.c1 || 0;
-            const s2 = scoresSaved.c2 || 0;
-            const s3 = scoresSaved.c3 || 0;
-            const avg = Math.round((s1 + s2 + s3) / 3);
-            
-            document.getElementById('global-score').innerText = avg + "%";
-            const cont = document.getElementById('module-stats');
-            cont.innerHTML = '';
-            Object.keys(db).forEach(k => {
-                const val = scoresSaved[k] || 0;
-                cont.innerHTML += `
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
-                        <span class="text-sm font-medium">${db[k].title}</span>
-                        <span class="font-bold text-indigo-600">${val}%</span>
-                    </div>`;
-            });
-        }
-
-        // FONCTION DE RESET
-        function resetScores() {
-            if(confirm("Veux-tu vraiment effacer toute ta progression ?")) {
-                localStorage.clear();
-                scoresSaved = { c1: 0, c2: 0, c3: 0 };
-                renderStats();
-                renderModules();
-                alert("Scores effacés !");
-            }
-        }
-
-        showSection('home');
-    </script>
-</body>
-</html>
+  
