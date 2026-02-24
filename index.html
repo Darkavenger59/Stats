@@ -3,254 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StatsMaster Pro - UE27</title>
+    <title>UE27 - StatsMaster</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .correct-btn { background-color: #10b981 !important; border-color: #059669 !important; color: white; }
-        .wrong-btn { background-color: #ef4444 !important; border-color: #b91c1c !important; color: white; }
+        .correct { background-color: #10b981 !important; color: white; }
+        .wrong { background-color: #ef4444 !important; color: white; }
         .hidden { display: none; }
-        .card-hover:hover { transform: translateY(-5px); transition: 0.3s; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen font-sans">
+<body class="bg-gray-100 min-h-screen">
 
-    <nav class="bg-indigo-800 text-white p-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold">📊 UE27 : Stats & Épido</h1>
-            <div class="flex gap-4">
-                <button onclick="showSection('home')" class="hover:text-indigo-200">Accueil</button>
-                <button onclick="showSection('stats')" class="hover:text-indigo-200">Progression</button>
+    <nav class="bg-indigo-700 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between">
+            <span class="font-bold">📊 UE27 : STATS & EPIDO</span>
+            <div class="space-x-4">
+                <button onclick="showSection('home')">Modules</button>
+                <button onclick="showSection('stats')">Scores</button>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="container mx-auto p-6">
-        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Modules d'Entraînement</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="module-grid"></div>
+    <section id="home" class="container mx-auto p-4">
+        <div id="module-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </section>
 
-    <section id="stats-section" class="container mx-auto p-6 hidden">
-        <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-xl text-center">
-            <h2 class="text-3xl font-bold mb-4">Tableau de Bord</h2>
-            <div id="global-score" class="text-6xl font-black text-indigo-600 mb-8">0%</div>
-            <div id="module-stats" class="space-y-4 text-left"></div>
-            <button onclick="resetScores()" class="mt-12 bg-red-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-red-700 transition">
-                RÉINITIALISER TOUS LES SCORES
-            </button>
+    <section id="stats" class="container mx-auto p-4 hidden">
+        <div class="bg-white p-6 rounded-xl shadow text-center max-w-md mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Progression Totale</h2>
+            <div id="global-avg" class="text-5xl font-bold text-indigo-600 mb-6">0%</div>
+            <div id="detail-stats" class="text-left space-y-2"></div>
+            <button onclick="resetAll()" class="mt-8 bg-red-600 text-white px-4 py-2 rounded">Réinitialiser tout</button>
         </div>
     </section>
 
-    <section id="quiz-section" class="container mx-auto p-6 hidden">
-        <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <span id="quiz-title" class="text-indigo-600 font-bold uppercase text-xs tracking-widest"></span>
-                <span id="progress-text" class="text-gray-400 text-sm"></span>
-            </div>
-            <div id="quiz-content">
-                <h2 id="question-text" class="text-xl font-semibold text-gray-800 mb-6"></h2>
-                <div id="options-container" class="space-y-3"></div>
-                <div id="explanation-box" class="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200 hidden">
-                    <p class="text-sm text-amber-800"><strong id="feedback-status"></strong> <span id="explanation-text"></span></p>
-                </div>
-                <button id="next-btn" class="w-full mt-8 bg-indigo-600 text-white py-4 rounded-xl font-bold hidden shadow-lg">Continuer</button>
-            </div>
-            <div id="review-content" class="hidden">
-                <h3 class="text-2xl font-bold mb-4 text-center">Analyse de tes erreurs 🧐</h3>
-                <div id="errors-list" class="space-y-4 mb-8"></div>
-                <button onclick="showSection('home')" class="w-full bg-gray-800 text-white py-4 rounded-xl font-bold">Retour à l'accueil</button>
-            </div>
+    <section id="quiz" class="container mx-auto p-4 hidden">
+        <div class="bg-white p-6 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <h3 id="q-title" class="text-indigo-600 font-bold mb-2"></h3>
+            <p id="q-text" class="text-lg mb-6"></p>
+            <div id="options" class="space-y-2"></div>
+            <div id="feedback" class="mt-4 p-4 rounded bg-gray-50 hidden text-sm"></div>
+            <button id="next-btn" class="w-full mt-6 bg-indigo-600 text-white py-3 rounded hidden">Question suivante</button>
         </div>
     </section>
 
     <script>
-        const db = {
-            c1: { title: "Introduction Statistique 1", questions: [
-                { q: "La statistique est :", o: ["La science du recueil", "Les chiffres d'une étude", "Une probabilité"], a: 0, e: "Science vs Résultats chiffrés." },
-                { q: "Variable 'Taille' :", o: ["Qualitative", "Quantitative discrète", "Quantitative continue"], a: 2, e: "Mesure continue." },
-                { q: "p = 0.04 au seuil 5% :", o: ["Conserve H0", "Rejette H0"], a: 1, e: "Significatif car p < 0.05." },
-                { q: "La médiane partage la série en :", o: ["2 parties égales", "3 parties", "Le plus fréquent"], a: 0, e: "50% au-dessus, 50% en-dessous." },
-                { q: "Corrélation de Pearson :", o: ["2 quantitatives", "2 moyennes", "Concordance"], a: 0, e: "Lien linéaire entre 2 chiffres." },
-                { q: "H0 signifie :", o: ["Différence", "Pas de différence"], a: 1, e: "Hypothèse de base du hasard." },
-                { q: "Écart-type mesure :", o: ["Position", "Dispersion"], a: 1, e: "Étagement autour de la moyenne." },
-                { q: "Étude de toute la population :", o: ["Sondage", "Recensement"], a: 1, e: "Ex: Recensement INSEE." },
-                { q: "Risque Alpha :", o: ["Rejeter H0 à tort", "Conserver H0 à tort"], a: 0, e: "Erreur de type I." },
-                { q: "Variable ordinale :", o: ["Quantitative", "Qualitative avec ordre"], a: 1, e: "Ex: Stade de maladie I, II, III." }
+        const data = {
+            m1: { t: "Intro Statistique 1", qs: [
+                { q: "La statistique est :", o: ["La science du recueil", "Un chiffre seul"], a: 0, e: "C'est la science globale selon le Pr Balayé." },
+                { q: "Une taille en cm est :", o: ["Discrète", "Continue"], a: 1, e: "Mesure physique = continue." },
+                { q: "Si p < 0.05 :", o: ["On rejette H0", "On garde H0"], a: 0, e: "Le résultat est significatif." },
+                { q: "La médiane :", o: ["Divise en deux", "Est la plus fréquente"], a: 0, e: "50% au dessus, 50% en dessous." },
+                { q: "H0 signifie :", o: ["Il y a un effet", "Pas de différence"], a: 1, e: "C'est l'hypothèse nulle." }
             ]},
-            c2: { title: "Tests Diagnostiques 1", questions: [
-                { q: "Probabilité T+ chez Malade :", o: ["VPP", "Sensibilité", "Spécificité"], a: 1, e: "Se = capacité à détecter les malades." },
-                { q: "Spécificité :", o: ["T- chez non-malades", "M- chez T-"], a: 0, e: "Identifier les sujets sains." },
-                { q: "La VPP dépend de la prévalence :", o: ["Vrai", "Faux"], a: 0, e: "Plus la maladie est rare, plus la VPP baisse." },
-                { q: "Kappa évalue :", o: ["Le risque", "La concordance"], a: 1, e: "Accord au-delà du hasard." },
-                { q: "Kappa = 0.85 :", o: ["Moyen", "Excellent"], a: 1, e: "> 0.80 est excellent." },
-                { q: "Courbe ROC :", o: ["Se / (1-Sp)", "VPP / VPN"], a: 0, e: "Performance du test." },
-                { q: "AUC test parfait :", o: ["0.5", "1"], a: 1, e: "100% de discrimination." },
-                { q: "Gold Standard :", o: ["Référence de vérité", "Nouveau test"], a: 0, e: "L'examen de certitude." },
-                { q: "Augmenter le seuil :", o: ["Se augmente", "Se diminue"], a: 1, e: "On devient plus strict." },
-                { q: "VPN :", o: ["Probabilité sain si T-", "Probabilité sain si T+"], a: 0, e: "Validité en situation réelle." }
+            m2: { t: "Diagnostic 1", qs: [
+                { q: "Sensibilité :", o: ["T+ chez Malades", "T- chez sains"], a: 0, e: "Capacité à détecter la maladie." },
+                { q: "Spécificité :", o: ["T- chez sains", "Sains chez T-"], a: 0, e: "Capacité à exclure les non-malades." },
+                { q: "VPP dépend de la prévalence :", o: ["Vrai", "Faux"], a: 0, e: "Plus la maladie est rare, plus la VPP est basse." },
+                { q: "Kappa :", o: ["Liaison", "Concordance"], a: 1, e: "Accord au-delà du hasard." },
+                { q: "AUC parfaite :", o: ["0.5", "1"], a: 1, e: "1 = discrimination totale." }
             ]},
-            c3: { title: "Épidémiologie 1", questions: [
-                { q: "L'incidence :", o: ["Anciens cas", "Nouveaux cas"], a: 1, e: "Vitesse d'apparition." },
-                { q: "RR calculé dans :", o: ["Cas-Témoins", "Cohorte"], a: 1, e: "Suivi temporel requis." },
-                { q: "OR utilisé en :", o: ["Cas-Témoins", "Cohorte"], a: 0, e: "Part de la maladie." },
-                { q: "RR = 1 :", o: ["Risque doublé", "Pas d'association"], a: 1, e: "Neutre." },
-                { q: "IC95% [1.2 ; 3.4] :", o: ["Significatif", "Non-significatif"], a: 0, e: "Exclut la valeur 1." },
-                { q: "Étude transversale :", o: ["Incidence", "Prévalence"], a: 1, e: "Photo à un instant T." },
-                { q: "Facteur de risque :", o: ["RR > 1", "RR < 1"], a: 0, e: "Augmente la probabilité." },
-                { q: "Randomisation limite :", o: ["Biais de confusion", "Erreurs de saisie"], a: 0, e: "Équilibre les groupes." },
-                { q: "Épido étiologique :", o: ["Compter", "Chercher les causes"], a: 1, e: "Étude des facteurs." },
-                { q: "Cohorte est :", o: ["Rétrospective", "Prospective"], a: 1, e: "Vers le futur." }
+            m3: { t: "Épidémiologie 1", qs: [
+                { q: "Incidence :", o: ["Nouveaux cas", "Anciens cas"], a: 0, e: "Mesure du flux." },
+                { q: "RR en cohorte :", o: ["Vrai", "Faux"], a: 0, e: "Nécessite de suivre les sujets." },
+                { q: "OR = 1 :", o: ["Protection", "Pas d'association"], a: 1, e: "Valeur neutre." },
+                { q: "Transversale :", o: ["Prévalence", "Incidence"], a: 0, e: "C'est une photo à un instant T." },
+                { q: "Biais de confusion :", o: ["Facteur tiers", "Erreur de calcul"], a: 0, e: "Brouille la relation réelle." }
             ]},
-            c4: { title: "Formatage & Recueil (Expert)", questions: [
-                { q: "Une ligne Excel = ", o: ["Une variable", "Un individu"], a: 1, e: "Structure standard : Ligne = Sujet." },
-                { q: "Format de fichier proscrit :", o: ["CSV", "PDF"], a: 1, e: "PDF inexploitable en stat." },
-                { q: "Sexe (H/F) :", o: ["Qualitative binaire", "Quantitative"], a: 0, e: "2 catégories." },
-                { q: "Le Codebook sert à :", o: ["Calculer", "Définir les variables"], a: 1, e: "Dictionnaire de données." },
-                { q: "Cellules fusionnées :", o: ["Interdites", "Conseillées"], a: 0, e: "Casse le traitement de données." },
-                { q: "Stat univariée :", o: ["1 variable", "2 variables"], a: 0, e: "Ex: Moyenne d'âge." },
-                { q: "Graphique variable qualitative :", o: ["Histogramme", "Circulaire"], a: 1, e: "Pour les proportions." },
-                { q: "Mode classe [20-30] :", o: ["25", "30"], a: 0, e: "Centre de la classe." },
-                { q: "Tirage aléatoire :", o: ["Représentativité", "Biais"], a: 0, e: "Garantit l'absence de choix." },
-                { q: "Plan d'analyse rédigé :", o: ["Avant recueil", "Après analyse"], a: 0, e: "Protocole fixe." }
+            m4: { t: "Recueil (Expert)", qs: [
+                { q: "Une ligne Excel :", o: ["Un individu", "Une variable"], a: 0, e: "Une ligne = Un patient." },
+                { q: "Format PDF :", o: ["Autorisé", "Interdit"], a: 1, e: "Inexploitable pour les calculs." },
+                { q: "Cellule fusionnée :", o: ["C'est mal", "C'est bien"], a: 0, e: "Interdit en base de données." },
+                { q: "Codebook :", o: ["Dictionnaire", "Livre de cours"], a: 0, e: "Définit le sens des colonnes." },
+                { q: "Variable Sexe :", o: ["Nominale", "Ordinale"], a: 0, e: "Pas d'ordre entre H et F." }
             ]},
-            c5: { title: "ROC & Kappa (Expert)", questions: [
-                { q: "AUC proche de 1 :", o: ["Performant", "Médiocre"], a: 0, e: "Bonne séparation." },
-                { q: "Diagonale ROC :", o: ["Hasard pur", "Test parfait"], a: 0, e: "AUC = 0.5." },
-                { q: "Baisser le seuil :", o: ["Augmente Se", "Baisse Se"], a: 0, e: "Plus de malades détectés." },
-                { q: "Kappa retire :", o: ["Hasard", "Erreurs"], a: 0, e: "Accord aléatoire exclu." },
-                { q: "Kappa = 0.30 :", o: ["Faible", "Excellent"], a: 0, e: "Accord médiocre." },
-                { q: "Reproductibilité :", o: ["Concordance", "Sensibilité"], a: 0, e: "Même résultat répété." },
-                { q: "Biopsie pour cancer :", o: ["Gold Standard", "Test dépistage"], a: 0, e: "La vérité." },
-                { q: "Dépistage priorité :", o: ["Sensibilité", "Spécificité"], a: 0, e: "Ne rien rater." },
-                { q: "VPN augmente si :", o: ["Maladie rare", "Maladie fréquente"], a: 0, e: "Plus facile d'exclure." },
-                { q: "AUC = 0.8 :", o: ["Bon test", "Médiocre"], a: 0, e: "Performance correcte." }
+            m5: { t: "Diagnostic (Expert)", qs: [
+                { q: "ROC Diagonale :", o: ["Hasard", "Parfait"], a: 0, e: "AUC = 0.5." },
+                { q: "Baisser le seuil :", o: ["Hausse Se", "Baisse Se"], a: 0, e: "On détecte plus de gens." },
+                { q: "Kappa 0.30 :", o: ["Faible", "Fort"], a: 0, e: "Accord médiocre." },
+                { q: "Gold Standard :", o: ["La vérité", "Un test rapide"], a: 0, e: "Référence absolue." },
+                { q: "Reproductibilité :", o: ["Kappa", "p-valeur"], a: 0, e: "Concordance intra-observateur." }
             ]},
-            c6: { title: "Risques & Biais (Expert)", questions: [
-                { q: "John Snow :", o: ["Cartographie", "Miasmes"], a: 0, e: "Choléra Londres 1854." },
-                { q: "Ratio :", o: ["Num/Dénum distincts", "Inclus"], a: 0, e: "Ex: H/F." },
-                { q: "Mortalité :", o: ["Population totale", "Malades"], a: 0, e: "Indicateur global." },
-                { q: "Étude transversale :", o: ["Prévalence", "Incidence"], a: 0, e: "Instantané." },
-                { q: "OR ~ RR si :", o: ["Maladie rare", "Maladie fréquente"], a: 0, e: "Hypothèse nécessaire." },
-                { q: "OR = 2.5 [0.8-4.2] :", o: ["Significatif", "Non significatif"], a: 1, e: "1 est dans l'IC." },
-                { q: "Biais mémorisation :", o: ["Rétrospectif", "Prospectif"], a: 0, e: "Cas-témoins surtout." },
-                { q: "Randomisation :", o: ["Équilibre confusion", "Gagne temps"], a: 0, e: "Rend comparables." },
-                { q: "Incidence :", o: ["Flux", "Stock"], a: 0, e: "Nouveaux cas." },
-                { q: "Épido descriptive :", o: ["Qui, Où, Quand", "Pourquoi"], a: 0, e: "Description simple." }
-            ]}
+            m6: { t: "Épidémio (Expert)", qs: [
+                { q: "John Snow :", o: ["Cartographie", "Vaccin"], a: 0, e: "Père de l'épido moderne." },
+                { q: "Ratio H/F :", o: ["Distincts", "Inclus"], a: 0, e: "Numérateur n'est pas dans le dénum." },
+                { q: "Létalité :", o: ["Morts / Malades", "Morts / Total"], a: 0, e: "Sévérité de la maladie." },
+                { q: "OR ~ RR si :", o: ["Maladie rare", "Maladie fréquente"], a: 0, e: "Hypothèse de base." },
+                { q: "Randomisation :", o: ["Équilibre", "Vitesse"], a: 0, e: "Gère les facteurs inconnus." }
+            ] }
         };
 
-        let currentModule = '';
-        let currentIdx = 0;
-        let score = 0;
-        let userErrors = [];
-        let scoresSaved = JSON.parse(localStorage.getItem('stats_final_v2')) || {};
+        let currentM = ''; let currentQ = 0; let score = 0;
+        let scores = JSON.parse(localStorage.getItem('ue27_scores_v3')) || {};
 
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id + (id.includes('section') ? '' : '')).classList.remove('hidden');
-            if(id === 'home') renderModules();
+            document.getElementById(id).classList.remove('hidden');
+            if(id === 'home') renderHome();
             if(id === 'stats') renderStats();
         }
 
-        function renderModules() {
-            const grid = document.getElementById('module-grid');
-            grid.innerHTML = '';
-            Object.keys(db).forEach(key => {
-                const s = scoresSaved[key] || 0;
-                grid.innerHTML += `
-                    <div onclick="startQuiz('${key}')" class="bg-white p-6 rounded-3xl shadow-md border-b-8 ${s > 70 ? 'border-green-400' : 'border-indigo-400'} cursor-pointer card-hover transition">
-                        <h3 class="font-bold text-lg mb-1">${db[key].title}</h3>
-                        <p class="text-gray-500 text-xs mb-4">10 Questions</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs font-black px-2 py-1 rounded bg-slate-100">${s}% réussi</span>
-                            <span class="text-indigo-600 font-bold text-sm">Lancer →</span>
-                        </div>
-                    </div>`;
+        function renderHome() {
+            const g = document.getElementById('module-grid');
+            g.innerHTML = '';
+            Object.keys(data).forEach(k => {
+                const s = scores[k] || 0;
+                g.innerHTML += `<div onclick="startQuiz('${k}')" class="bg-white p-4 rounded-xl shadow cursor-pointer hover:bg-indigo-50 border-l-4 border-indigo-500">
+                    <h4 class="font-bold">${data[k].t}</h4>
+                    <p class="text-sm">Score : ${s}%</p>
+                </div>`;
             });
         }
 
-        function startQuiz(key) {
-            currentModule = key; currentIdx = 0; score = 0; userErrors = [];
-            showSection('quiz-section');
-            document.getElementById('quiz-content').classList.remove('hidden');
-            document.getElementById('review-content').classList.add('hidden');
-            loadQuestion();
+        function startQuiz(k) {
+            currentM = k; currentQ = 0; score = 0;
+            showSection('quiz');
+            loadQ();
         }
 
-        function loadQuestion() {
-            const q = db[currentModule].questions[currentIdx];
-            document.getElementById('quiz-title').innerText = db[currentModule].title;
-            document.getElementById('progress-text').innerText = `${currentIdx + 1} / 10`;
-            document.getElementById('question-text').innerText = q.q;
-            document.getElementById('explanation-box').classList.add('hidden');
+        function loadQ() {
+            const q = data[currentM].qs[currentQ];
+            document.getElementById('q-title').innerText = data[currentM].t;
+            document.getElementById('q-text').innerText = q.q;
+            document.getElementById('feedback').classList.add('hidden');
             document.getElementById('next-btn').classList.add('hidden');
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
+            const o = document.getElementById('options');
+            o.innerHTML = '';
             q.o.forEach((opt, i) => {
                 const b = document.createElement('button');
-                b.className = "w-full text-left p-4 rounded-xl border-2 border-slate-100 hover:bg-slate-50 font-medium transition";
+                b.className = "w-full text-left p-3 border rounded hover:bg-gray-50";
                 b.innerText = opt;
                 b.onclick = () => check(i, b);
-                container.appendChild(b);
+                o.appendChild(b);
             });
         }
 
-        function check(idx, btn) {
-            const q = db[currentModule].questions[currentIdx];
-            const btns = document.getElementById('options-container').children;
-            const isCorrect = (idx === q.a);
-            if(isCorrect) {
-                score++; btn.classList.add('correct-btn');
-                document.getElementById('feedback-status').innerText = "Bravo !";
-                document.getElementById('feedback-status').className = "text-green-600 font-bold";
-            } else {
-                btn.classList.add('wrong-btn'); btns[q.a].classList.add('correct-btn');
-                document.getElementById('feedback-status').innerText = "Erreur...";
-                document.getElementById('feedback-status').className = "text-red-600 font-bold";
-                userErrors.push({ q: q.q, correct: q.o[q.a], expl: q.e });
-            }
-            document.getElementById('explanation-text').innerText = q.e;
-            document.getElementById('explanation-box').classList.remove('hidden');
+        function check(i, b) {
+            const q = data[currentM].qs[currentQ];
+            const opts = document.getElementById('options').children;
+            if(i === q.a) { score++; b.classList.add('correct'); }
+            else { b.classList.add('wrong'); opts[q.a].classList.add('correct'); }
+            document.getElementById('feedback').innerText = q.e;
+            document.getElementById('feedback').classList.remove('hidden');
             document.getElementById('next-btn').classList.remove('hidden');
-            for(let b of btns) b.disabled = true;
+            for(let btn of opts) btn.disabled = true;
         }
 
         document.getElementById('next-btn').onclick = () => {
-            currentIdx++; if(currentIdx < 10) loadQuestion(); else finish();
+            currentQ++;
+            if(currentQ < data[currentM].qs.length) loadQ();
+            else {
+                const p = Math.round((score / data[currentM].qs.length) * 100);
+                if(p > (scores[currentM] || 0)) { scores[currentM] = p; localStorage.setItem('ue27_scores_v3', JSON.stringify(scores)); }
+                showSection('home');
+            }
         };
 
-        function finish() {
-            const p = Math.round((score / 10) * 100);
-            if(p > (scoresSaved[currentModule] || 0)) {
-                scoresSaved[currentModule] = p;
-                localStorage.setItem('stats_final_v2', JSON.stringify(scoresSaved));
-            }
-            document.getElementById('quiz-content').classList.add('hidden');
-            document.getElementById('review-content').classList.remove('hidden');
-            const errList = document.getElementById('errors-list');
-            errList.innerHTML = userErrors.length === 0 ? "<p class='text-green-600 font-bold text-center'>Parfait !</p>" : "";
-            userErrors.forEach(err => {
-                errList.innerHTML += `<div class="p-4 bg-red-50 rounded-xl border-l-4 border-red-400"><p class="font-bold text-gray-800 text-sm">${err.q}</p><p class="text-xs text-green-700 font-bold mt-1">✓ Correct : ${err.correct}</p></div>`;
-            });
-        }
-
         function renderStats() {
-            const keys = Object.keys(db);
-            const total = keys.reduce((acc, k) => acc + (scoresSaved[k] || 0), 0);
-            const avg = Math.round(total / keys.length);
-            document.getElementById('global-score').innerText = avg + "%";
-            const cont = document.getElementById('module-stats');
-            cont.innerHTML = '';
-            keys.forEach(k => {
-                cont.innerHTML += `<div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg"><span class="text-sm font-medium">${db[k].title}</span><span class="font-bold text-indigo-600">${scoresSaved[k] || 0}%</span></div>`;
+            const ks = Object.keys(data);
+            const total = ks.reduce((a, k) => a + (scores[k] || 0), 0);
+            document.getElementById('global-avg').innerText = Math.round(total / ks.length) + "%";
+            const det = document.getElementById('detail-stats');
+            det.innerHTML = '';
+            ks.forEach(k => {
+                det.innerHTML += `<div class="flex justify-between border-b py-1"><span>${data[k].t}</span><span class="font-bold">${scores[k] || 0}%</span></div>`;
             });
         }
 
-        function resetScores() {
-            if(confirm("Effacer tout ?")) {
-                localStorage.removeItem('stats_final_v2');
-                scoresSaved = {}; renderStats(); renderModules();
-            }
+        function resetAll() {
+            if(confirm("Tout effacer ?")) { localStorage.clear(); scores = {}; renderStats(); renderHome(); }
         }
+
         showSection('home');
     </script>
 </body>
