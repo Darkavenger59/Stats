@@ -3,94 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UE27 - Expert Stats & Épido</title>
+    <title>UE27 Master - Stats & Épido</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .correct { background-color: #10b981 !important; color: white; border-color: #059669 !important; }
         .wrong { background-color: #ef4444 !important; color: white; border-color: #b91c1c !important; }
         .hidden { display: none; }
-        .tab-active { border-bottom: 4px solid white; font-weight: bold; opacity: 1; }
-        .nav-btn { opacity: 0.8; transition: 0.3s; }
-        .nav-btn:hover { opacity: 1; }
-        .fiche-cours { background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; border-left: 6px solid #4f46e5; shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .concept-cle { background: #f8fafc; border: 1px solid #e2e8f0; padding: 0.75rem; border-radius: 0.5rem; margin-top: 0.5rem; }
-        h3 { color: #1e1b4b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; }
-        strong { color: #4338ca; }
+        .tab-active { border-bottom: 4px solid white; font-weight: bold; }
+        .fiche-cours { background: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; border-left: 6px solid #4f46e5; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .formule { background: #f1f5f9; padding: 0.5rem px; border-radius: 0.5rem; font-family: monospace; color: #1e293b; font-weight: bold; display: inline-block; margin: 0.5rem 0; }
+        h3 { color: #1e1b4b; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; }
+        .notion-importante { color: #4338ca; font-weight: 700; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen pb-20">
 
     <nav class="bg-indigo-700 text-white p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <span class="font-black tracking-tighter text-xl">UE27 PRO</span>
-            <div class="flex space-x-6">
-                <button id="nav-home" onclick="showSection('home')" class="nav-btn tab-active">QUIZ</button>
-                <button id="nav-cours" onclick="showSection('cours')" class="nav-btn">COURS</button>
-                <button id="nav-stats" onclick="showSection('stats')" class="nav-btn">SCORES</button>
+            <span class="font-black text-xl">UE27 PRO</span>
+            <div class="flex space-x-6 text-sm">
+                <button id="nav-home" onclick="showSection('home')" class="tab-active py-1">QUIZ</button>
+                <button id="nav-cours" onclick="showSection('cours')" class="py-1">COURS (SYNTHÈSE)</button>
+                <button id="nav-stats" onclick="showSection('stats')" class="py-1">SCORES</button>
             </div>
         </div>
     </nav>
 
     <section id="cours" class="container mx-auto p-4 hidden max-w-4xl">
-        <h2 class="text-3xl font-black mb-8 text-indigo-900 text-center">Fiches de Révision Détaillées</h2>
+        <h2 class="text-3xl font-black mb-8 text-indigo-900 text-center">Fiches de Révision Complètes</h2>
 
         <div class="fiche-cours">
             <h3>1. Introduction à la Statistique</h3>
-            <div class="space-y-4 text-sm text-gray-700">
-                <p><strong>La Statistique :</strong> Science du recueil, de l'analyse et de l'interprétation. Ne pas confondre avec "les statistiques" (les chiffres).</p>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="concept-cle">
-                        <p class="font-bold">Types de Variables :</p>
-                        <ul class="list-disc ml-4 mt-1">
-                            <li><strong>Qualitatives :</strong> Nominale (catégories) ou Ordinale (ordre logique ex: Stade I à IV).</li>
-                            <li><strong>Quantitatives :</strong> Discrètes (nombres entiers/comptage) ou Continues (mesures physiques, décimales).</li>
-                        </ul>
-                    </div>
-                    <div class="concept-cle">
-                        <p class="font-bold">Indicateurs clés :</p>
-                        <ul class="list-disc ml-4 mt-1">
-                            <li><strong>Tendance centrale :</strong> Moyenne (sensible aux extrêmes), Médiane (robuste, sépare 50/50), Mode (plus fréquent).</li>
-                            <li><strong>Dispersion :</strong> Écart-type (moyenne des écarts à la moyenne), Étendue, Quartiles.</li>
-                        </ul>
-                    </div>
-                </div>
-                <p class="mt-4"><strong>L'Inférence :</strong> Étape la plus importante. Consiste à utiliser un <em>échantillon</em> pour conclure sur une <em>population</em> grâce aux tests de significativité (p-valeur).</p>
+            <div class="space-y-4 text-sm text-gray-700 leading-relaxed">
+                <p><span class="notion-importante">Définition :</span> La statistique est la science (recueil/analyse/interprétation), les statistiques sont les chiffres. La démarche suit 2 étapes : la <span class="notion-importante">Descriptive</span> (résumer) et l'<span class="notion-importante">Inférentielle</span> (extrapoler).</p>
+                
+                <p><strong>Variables Qualitatives :</strong> 
+                <br>• Nominale (ex: Sexe, Groupe sanguin) 
+                <br>• Ordinale (ex: Stade cancer I à IV, Échelle de douleur)</p>
+                
+                <p><strong>Variables Quantitatives :</strong> 
+                <br>• Discrète (nombres entiers, ex: nombre d'enfants)
+                <br>• Continue (mesure physique, ex: poids, taille, glycémie)</p>
+
+                <p><strong>Indicateurs :</strong>
+                <br>• Moyenne : très sensible aux valeurs extrêmes.
+                <br>• Médiane : sépare l'échantillon en deux moitiés égales (50% > M / 50% < M).
+                <br>• Corrélation de Pearson ($r$) : entre -1 et 1. Mesure le lien linéaire entre deux variables quantitatives.</p>
+
+                <p><strong>Tests de Significativité :</strong> 
+                <br>• $H_0$ : Hypothèse nulle (pas de différence, tout est dû au hasard).
+                <br>• $p$-valeur : Si $p < 0.05$, on rejette $H_0$. Le résultat est dit <span class="notion-importante">significatif</span>.</p>
             </div>
         </div>
 
         <div class="fiche-cours">
-            <h3>2. Test Diagnostique & Concordance</h3>
+            <h3>2. Évaluation Diagnostique & Concordance</h3>
             <div class="space-y-4 text-sm text-gray-700">
-                <p>On évalue un nouveau test par rapport au <strong>Gold Standard</strong> (la vérité absolue).</p>
-                <div class="bg-indigo-50 p-4 rounded-lg">
-                    <p class="mb-2 font-bold uppercase text-xs">Tableau de contingence (2x2) :</p>
-                    <ul class="space-y-2">
-                        <li><strong>Sensibilité (Se) :</strong> Probabilité que le test soit positif si le sujet est malade. (VP / Malades). C'est le pouvoir de <em>détection</em>.</li>
-                        <li><strong>Spécificité (Sp) :</strong> Probabilité que le test soit négatif si le sujet est sain. (VN / Sains). C'est le pouvoir de <em>discrimination</em>.</li>
-                        <li><strong>VPP :</strong> Chance d'être malade si le test est +. Dépend fortement de la <strong>prévalence</strong>.</li>
-                        <li><strong>VPN :</strong> Chance d'être sain si le test est -.</li>
-                    </ul>
+                <p>On évalue un test par rapport à un <span class="notion-importante">Gold Standard</span> (référence de certitude).</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-indigo-50 p-3 rounded-lg">
+                        <p class="font-bold text-indigo-800">Qualités Intrinsèques (Invariable)</p>
+                        <p>• <strong>Sensibilité (Se) :</strong> Capacité à détecter les malades ($VP / M$). Indispensable pour le dépistage.</p>
+                        <p>• <strong>Spécificité (Sp) :</strong> Capacité à identifier les sujets sains ($VN / M-$).</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="font-bold text-green-800">Qualités Extrinsèques (Dépendent de la prévalence)</p>
+                        <p>• <strong>VPP :</strong> Probabilité d'être malade si le test est positif.</p>
+                        <p>• <strong>VPN :</strong> Probabilité d'être sain si le test est négatif.</p>
+                    </div>
                 </div>
-                <p class="mt-4"><strong>Courbe ROC :</strong> Représente Se en fonction de (1-Sp). L'aire sous la courbe (AUC) mesure la performance globale (0.5 = hasard, 1 = parfait).</p>
-                <p><strong>Kappa (Concordance) :</strong> Utilisé pour comparer deux observateurs. k = (Po - Pc) / (1 - Pc). Retranche l'accord dû au hasard.</p>
+                
+                <p><strong>Note :</strong> Si la prévalence augmente, la VPP augmente (le test devient plus "fiable" pour confirmer un diagnostic).</p>
+
+                <p><strong>Concordance (Kappa) :</strong> Évalue l'accord entre deux examinateurs ou tests.
+                <br><span class="formule">k = (Po - Pc) / (1 - Pc)</span>
+                <br>• 0.2-0.4 : Faible | 0.4-0.6 : Modéré | 0.6-0.8 : Fort | > 0.8 : Excellent.</p>
             </div>
         </div>
 
         <div class="fiche-cours">
             <h3>3. Épidémiologie & Risques</h3>
             <div class="space-y-4 text-sm text-gray-700">
-                <p><strong>Indicateurs de fréquence :</strong> Prévalence (Stock de cas à un instant T) vs Incidence (Flux de nouveaux cas sur une période).</p>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="concept-cle">
-                        <p class="font-bold">Étude de Cohorte (Prospective) :</p>
-                        <p>On suit des gens exposés ou non. Indicateur : <strong>Risque Relatif (RR)</strong>. On regarde qui tombe malade.</p>
-                    </div>
-                    <div class="concept-cle">
-                        <p class="font-bold">Étude Cas-Témoins (Rétrospective) :</p>
-                        <p>On part des malades (Cas) et on cherche les expositions passées. Indicateur : <strong>Odds Ratio (OR)</strong>.</p>
-                    </div>
+                <p><span class="notion-importante">Prévalence :</span> Stock de cas à un instant donné (proportion).
+                <br><span class="notion-importante">Incidence :</span> Flux de nouveaux cas sur une période (vitesse).</p>
+
+                <div class="space-y-2 border-l-2 border-amber-300 pl-4">
+                    <p><strong>Étude de Cohorte (Exposés vs Non-Exposés) :</strong> 
+                    <br>Prospective. On calcule le <span class="notion-importante">Risque Relatif (RR)</span>.</p>
+                    
+                    <p><strong>Étude Cas-Témoins (Malades vs Non-Malades) :</strong> 
+                    <br>Rétrospective. Idéale pour maladies rares. On calcule l'<span class="notion-importante">Odds Ratio (OR)</span>.</p>
                 </div>
-                <p class="mt-4"><strong>Significativité des Risques :</strong> On regarde l'Intervalle de Confiance (IC 95%). Si l'intervalle <strong>inclut la valeur 1</strong>, le résultat n'est PAS significatif (H0 conservée).</p>
+
+                <p><strong>Interprétation des Risques (RR ou OR) :</strong>
+                <br>• $> 1$ : Facteur de risque.
+                <br>• $< 1$ : Facteur protecteur.
+                <br>• $= 1$ : Pas d'association.
+                <br><span class="notion-importante">Attention :</span> Si l'IC 95% contient la valeur 1 (ex: [0.8 ; 2.3]), ce n'est pas significatif.</p>
+                
+                <p><strong>Biais :</strong> 
+                <br>• Biais de sélection (échantillon non représentatif).
+                <br>• Biais de confusion (facteur tiers qui brouille le lien).
+                <br>• Biais de mémorisation (typique des études rétrospectives).</p>
             </div>
         </div>
     </section>
@@ -102,115 +117,113 @@
 
     <section id="stats" class="container mx-auto p-4 hidden">
         <div class="bg-white p-10 rounded-3xl shadow-xl text-center max-w-lg mx-auto border border-slate-200">
-            <h2 class="text-3xl font-black mb-2 text-indigo-900">Tableau de Bord</h2>
-            <p class="text-gray-400 text-sm mb-8">Maîtrise globale de l'UE27</p>
+            <h2 class="text-3xl font-black mb-2 text-indigo-900">Scores</h2>
             <div id="global-avg" class="text-7xl font-black text-indigo-600 mb-10">0%</div>
             <div id="detail-stats" class="text-left space-y-3 mb-10"></div>
-            <button onclick="resetAll()" class="bg-red-50 text-red-600 px-6 py-3 rounded-2xl font-bold hover:bg-red-100 transition">Réinitialiser ma progression</button>
+            <button onclick="resetAll()" class="text-red-600 font-bold hover:underline">Réinitialiser les scores</button>
         </div>
     </section>
 
     <section id="quiz" class="container mx-auto p-4 hidden">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-2xl mx-auto border border-indigo-50">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-2xl mx-auto">
             <div class="flex justify-between items-center mb-8">
                 <span id="q-title" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest"></span>
                 <span id="q-progress" class="font-mono text-sm text-slate-400"></span>
             </div>
-            <h2 id="q-text" class="text-2xl font-bold text-slate-800 mb-10 leading-tight"></h2>
+            <h2 id="q-text" class="text-2xl font-bold text-slate-800 mb-10"></h2>
             <div id="options" class="space-y-4"></div>
             <div id="feedback" class="mt-8 p-6 rounded-2xl bg-amber-50 border border-amber-100 hidden">
-                <p id="feedback-txt" class="text-amber-900 text-sm italic"></p>
+                <p id="feedback-txt" class="text-amber-900 text-sm"></p>
             </div>
-            <button id="next-btn" class="w-full mt-10 bg-indigo-600 text-white py-5 rounded-2xl font-black shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">CONTINUER →</button>
+            <button id="next-btn" class="w-full mt-10 bg-indigo-600 text-white py-5 rounded-2xl font-black shadow-lg hover:bg-indigo-700 transition">CONTINUER →</button>
         </div>
     </section>
 
     <script>
+        // BASE DE DONNÉES COMPLÈTE (60 QUESTIONS)
         const quizData = {
-            m1: { t: "Statistique : Bases", qs: [
-                { q: "Quelle est la définition de la statistique ?", o: ["La science du recueil et de l'analyse", "L'ensemble des chiffres d'une étude"], a: 0, e: "La statistique est la science, tandis que LES statistiques sont les résultats chiffrés." },
-                { q: "La médiane est l'indicateur qui :", o: ["Divise la série en deux moitiés", "Est le plus fréquent dans la série"], a: 0, e: "La médiane sépare la population en 50% au-dessus et 50% en-dessous." },
-                { q: "Une variable 'Taille en cm' est :", o: ["Quantitative continue", "Quantitative discrète"], a: 0, e: "Une mesure physique peut prendre une infinité de valeurs, elle est continue." },
-                { q: "Si p = 0.03 au seuil de 5% :", o: ["On rejette H0", "On conserve H0"], a: 0, e: "p < 0.05 signifie que le résultat est statistiquement significatif." },
-                { q: "L'écart-type mesure quoi ?", o: ["La dispersion des données", "La tendance centrale"], a: 0, e: "Il indique comment les données sont étalées autour de la moyenne." },
-                { q: "H0 signifie quoi ?", o: ["Absence de différence (Hasard)", "Existence d'une différence"], a: 0, e: "H0 est l'hypothèse nulle." },
-                { q: "Variable 'Sexe' (H/F) :", o: ["Qualitative nominale", "Qualitative ordinale"], a: 0, e: "Pas d'ordre entre Homme et Femme." },
-                { q: "L'inférence statistique sert à :", o: ["Extrapoler à la population", "Décrire l'échantillon"], a: 0, e: "L'inférence permet de généraliser les résultats." },
-                { q: "Le mode est :", o: ["La valeur la plus fréquente", "La moyenne arithmétique"], a: 0, e: "Le mode est le sommet de la distribution." },
-                { q: "Un recensement étudie :", o: ["Toute la population", "Un échantillon"], a: 0, e: "Contrairement au sondage, le recensement est exhaustif." }
+            m1: { t: "Stats : Intro & Bases", qs: [
+                { q: "La statistique est :", o: ["La science du recueil et de l'analyse", "L'ensemble des chiffres d'une étude"], a: 0, e: "Science vs Résultats chiffrés." },
+                { q: "La médiane partage la série en :", o: ["Deux moitiés égales (50/50)", "La valeur la plus fréquente"], a: 0, e: "Divise l'échantillon par le milieu." },
+                { q: "Une variable 'Taille en cm' est :", o: ["Quantitative continue", "Quantitative discrète"], a: 0, e: "Mesure physique = continue." },
+                { q: "Si p = 0.03 au seuil de 5% :", o: ["On rejette H0", "On conserve H0"], a: 0, e: "p < 0.05 est significatif." },
+                { q: "L'écart-type mesure :", o: ["La dispersion", "La tendance centrale"], a: 0, e: "Étagement autour de la moyenne." },
+                { q: "H0 signifie :", o: ["Absence de différence", "Existence d'une différence"], a: 0, e: "Hypothèse nulle." },
+                { q: "Variable 'Sexe' (H/F) :", o: ["Qualitative nominale", "Qualitative ordinale"], a: 0, e: "Pas d'ordre entre catégories." },
+                { q: "L'inférence statistique sert à :", o: ["Extrapoler à la population", "Décrire l'échantillon"], a: 0, e: "C'est l'étape après le descriptif." },
+                { q: "Le mode est :", o: ["La valeur la plus fréquente", "La moyenne"], a: 0, e: "Sommet de la distribution." },
+                { q: "Un recensement est :", o: ["Une étude exhaustive", "Un sondage par échantillon"], a: 0, e: "Toute la population est étudiée." }
             ]},
-            m2: { t: "Tests Diagnostiques", qs: [
-                { q: "La Sensibilité (Se) est :", o: ["T+ chez les malades", "T- chez les sains"], a: 0, e: "Se = VP / Malades totaux." },
-                { q: "La Spécificité (Sp) est :", o: ["T- chez les sains", "M- chez les testés +"], a: 0, e: "Sp = VN / Sains totaux." },
-                { q: "Si la prévalence chute, la VPP :", o: ["Diminue", "Augmente"], a: 0, e: "Plus la maladie est rare, plus les tests positifs risquent d'être faux." },
-                { q: "Le Gold Standard est :", o: ["L'examen de référence de vérité", "Le nouveau test à évaluer"], a: 0, e: "C'est la certitude (souvent coûteuse ou invasive)." },
-                { q: "Le coefficient Kappa mesure :", o: ["La concordance", "La corrélation linéaire"], a: 0, e: "Il évalue l'accord entre deux observateurs/tests." },
-                { q: "Un Kappa de 0.85 est dit :", o: ["Excellent", "Médiocre"], a: 0, e: "Au dessus de 0.80, c'est une excellente concordance." },
-                { q: "La courbe ROC étudie :", o: ["Se en fonction de (1-Sp)", "VPP en fonction de VPN"], a: 0, e: "Elle aide à choisir le meilleur seuil décisionnel." },
-                { q: "L'aire sous la courbe (AUC) idéale est :", o: ["1", "0.5"], a: 0, e: "1 signifie que le test ne se trompe jamais." },
-                { q: "La VPN est la probabilité :", o: ["D'être sain si testé -", "D'être malade si testé -"], a: 0, e: "VPN = Probabilité(M- | T-)." },
-                { q: "Baisser le seuil de positivité :", o: ["Augmente la Se", "Baisse la Se"], a: 0, e: "On 'ratisse' plus large, donc on détecte plus de malades." }
+            m2: { t: "Diagnostic & Se/Sp", qs: [
+                { q: "La Sensibilité (Se) est :", o: ["T+ chez les malades", "T- chez les sains"], a: 0, e: "VP / Malades." },
+                { q: "La Spécificité (Sp) est :", o: ["T- chez les sains", "VP / Malades"], a: 0, e: "VN / Sains." },
+                { q: "Si la prévalence diminue, la VPP :", o: ["Diminue", "Augmente"], a: 0, e: "Plus rare est la maladie, plus le risque de faux positif est grand." },
+                { q: "Le Gold Standard est :", o: ["La référence de vérité", "Le nouveau test"], a: 0, e: "Ex: Biopsie." },
+                { q: "Le coefficient Kappa mesure :", o: ["La concordance", "L'incidence"], a: 0, e: "Accord retirant le hasard." },
+                { q: "Kappa = 0.85 est dit :", o: ["Excellent", "Faible"], a: 0, e: "> 0.80 = Excellent." },
+                { q: "La courbe ROC étudie :", o: ["Se en fonction de (1-Sp)", "VPP / VPN"], a: 0, e: "Aide au choix du seuil." },
+                { q: "L'AUC idéale est :", o: ["1", "0.5"], a: 0, e: "1 = Discrimination parfaite." },
+                { q: "La VPN est :", o: ["M- chez les T-", "M+ chez les T-"], a: 0, e: "Probabilité d'être sain si testé négatif." },
+                { q: "Baisser le seuil de détection :", o: ["Augmente la Se", "Baisse la Se"], a: 0, e: "On détecte plus de malades." }
             ]},
-            m3: { t: "Épidémiologie", qs: [
-                { q: "L'incidence mesure :", o: ["Le flux (nouveaux cas)", "Le stock (cas totaux)"], a: 0, e: "Nouveaux cas par unité de temps." },
-                { q: "Le Risque Relatif (RR) s'utilise en :", o: ["Étude de cohorte", "Étude cas-témoins"], a: 0, e: "On suit les sujets dans le temps (prospectif)." },
-                { q: "L'Odds Ratio (OR) s'utilise en :", o: ["Étude cas-témoins", "Étude de cohorte"], a: 0, e: "On part des malades (rétrospectif)." },
-                { q: "Si IC95% du RR est [1.2 ; 3.4] :", o: ["Le résultat est significatif", "Il n'y a pas d'effet"], a: 0, e: "L'intervalle ne contient pas 1." },
-                { q: "La prévalence est :", o: ["Une proportion à un instant T", "Une vitesse d'apparition"], a: 0, e: "C'est le nombre de malades / population totale à un moment donné." },
-                { q: "Une étude transversale est :", o: ["Une photo à l'instant T", "Un suivi sur 10 ans"], a: 0, e: "Elle mesure la prévalence." },
-                { q: "Le biais de confusion se gère par :", o: ["La randomisation", "Le calcul de moyenne"], a: 0, e: "Tirer au sort équilibre les facteurs tiers." },
-                { q: "L'épidémiologie étiologique cherche :", o: ["Les causes", "À décrire"], a: 0, e: "Elle cherche les liens de causalité." },
-                { q: "John Snow est lié à quelle maladie ?", o: ["Le Choléra", "La Peste"], a: 0, e: "Londres, 1854, pompe de Broad Street." },
-                { q: "RR = 1 signifie quoi ?", o: ["Pas d'association", "Risque doublé"], a: 0, e: "Le risque est identique entre exposés et non-exposés." }
+            m3: { t: "Épidémiologie & Risques", qs: [
+                { q: "L'incidence mesure :", o: ["Le flux (nouveaux cas)", "Le stock"], a: 0, e: "Vitesse d'apparition." },
+                { q: "Le RR se calcule en :", o: ["Étude de cohorte", "Étude cas-témoins"], a: 0, e: "Prospectif." },
+                { q: "L'OR se calcule en :", o: ["Étude cas-témoins", "Étude de cohorte"], a: 0, e: "Rétrospectif." },
+                { q: "IC95% du RR = [1.2 ; 3.4] :", o: ["Significatif", "Non-significatif"], a: 0, e: "N'inclut pas 1." },
+                { q: "La prévalence est :", o: ["Une proportion à l'instant T", "Une vitesse"], a: 0, e: "Stock de malades." },
+                { q: "Étude transversale est :", o: ["Une photo à l'instant T", "Un suivi"], a: 0, e: "Mesure la prévalence." },
+                { q: "Biais de confusion géré par :", o: ["Randomisation", "Sondage"], a: 0, e: "Équilibre les facteurs." },
+                { q: "Épido étiologique cherche :", o: ["Les causes", "À décrire"], a: 0, e: "Lien de causalité." },
+                { q: "John Snow :", o: ["Choléra (1854)", "Peste"], a: 0, e: "Père de l'épido moderne." },
+                { q: "RR = 1 signifie :", o: ["Pas d'association", "Effet fort"], a: 0, e: "Valeur neutre." }
             ]},
             m4: { t: "Expert : Formatage", qs: [
-                { q: "Une ligne dans un tableau stats =", o: ["Un individu", "Une variable"], a: 0, e: "C'est la règle d'or (Tidy Data)." },
-                { q: "Format à bannir pour l'analyse :", o: ["PDF", "CSV"], a: 0, e: "Le PDF est figé, impossible de calculer dessus." },
-                { q: "Les cellules fusionnées sont :", o: ["Interdites", "Conseillées"], a: 0, e: "Elles cassent la lecture automatique des données." },
-                { q: "Le dictionnaire des variables s'appelle :", o: ["Un codebook", "Un carnet de santé"], a: 0, e: "Il définit le type et le sens de chaque colonne." },
-                { q: "Un 'individu statistique' peut être :", o: ["Un patient, un pays, une ville", "Seulement un humain"], a: 0, e: "C'est l'unité élémentaire de l'étude." },
-                { q: "Statistique descriptive univariée :", o: ["Étudie 1 seule variable", "Étudie le lien entre 2 variables"], a: 0, e: "Uni = 1." },
-                { q: "Un plan d'analyse se fait :", o: ["Avant de recueillir les données", "Après avoir vu les résultats"], a: 0, e: "Pour éviter de chercher des liens au hasard." },
-                { q: "Représentation variable qualitative :", o: ["Diagramme circulaire / Barres", "Histogramme"], a: 0, e: "L'histogramme est réservé aux variables quantitatives." },
-                { q: "La variable 'Stade de la maladie' est :", o: ["Qualitative ordinale", "Quantitative"], a: 0, e: "C'est une catégorie avec un ordre croissant." },
-                { q: "Pour les stats, Excel est :", o: ["Un outil de recueil", "Un logiciel d'analyse pro"], a: 0, e: "Excel est bon pour saisir, moins pour les analyses complexes." }
+                { q: "Une ligne Excel =", o: ["Un individu", "Une variable"], a: 0, e: "Tidy data : 1 ligne = 1 sujet." },
+                { q: "Format à bannir :", o: ["PDF", "CSV"], a: 0, e: "PDF inexploitable." },
+                { q: "Cellules fusionnées :", o: ["Interdites", "Conseillées"], a: 0, e: "Casse l'importation." },
+                { q: "Codebook :", o: ["Dictionnaire des variables", "Calculateur"], a: 0, e: "Explique les colonnes." },
+                { q: "Un individu stat peut être :", o: ["Patient, ville, pays", "Uniquement humain"], a: 0, e: "Unité élémentaire." },
+                { q: "Univarié :", o: ["1 seule variable", "Lien entre 2"], a: 0, e: "Uni = 1." },
+                { q: "Plan d'analyse :", o: ["Avant recueil", "Après analyse"], a: 0, e: "Évite le 'p-hacking'." },
+                { q: "Graphe variable qualitative :", o: ["Circulaire / Barres", "Histogramme"], a: 0, e: "Histogramme = Continu." },
+                { q: "Variable ordinale :", o: ["Stade maladie", "Glycémie"], a: 0, e: "Ordre logique." },
+                { q: "Excel en stats :", o: ["Outil de recueil", "Logiciel pro d'analyse"], a: 0, e: "Bon pour saisir les données." }
             ]},
-            m5: { t: "Expert : Diagnostic", qs: [
-                { q: "La diagonale de la courbe ROC (AUC=0.5) :", o: ["Test inutile (hasard)", "Test parfait"], a: 0, e: "C'est le niveau d'une pièce jetée en l'air." },
-                { q: "La reproductibilité se mesure par :", o: ["La concordance", "La sensibilité"], a: 0, e: "C'est la capacité à donner le même résultat plusieurs fois." },
-                { q: "Le Kappa de Cohen retire quoi ?", o: ["L'accord dû au hasard", "Les erreurs de saisie"], a: 0, e: "C'est ce qui le rend robuste." },
-                { q: "Un test de dépistage doit être :", o: ["Très sensible", "Très spécifique"], a: 0, e: "On ne veut rater aucun cas (peu de faux négatifs)." },
-                { q: "Si Se=100%, alors :", o: ["Il n'y a aucun faux négatif", "Il n'y a aucun faux positif"], a: 0, e: "Tous les malades sont détectés." },
-                { q: "Si Sp=100%, alors :", o: ["Il n'y a aucun faux positif", "Il n'y a aucun faux négatif"], a: 0, e: "Tous les sains sont bien exclus." },
-                { q: "L'AUC de 0.8 est considérée comme :", o: ["Bonne", "Médiocre"], a: 0, e: "Entre 0.8 et 0.9, c'est une bonne performance." },
-                { q: "La VPP est utile pour :", o: ["Le clinicien face au patient", "Le chercheur en labo"], a: 0, e: "Elle répond à : 'Quelle chance j'ai d'être malade ?'." },
-                { q: "La VPN augmente si la maladie est :", o: ["Rare", "Fréquente"], a: 0, e: "Si peu de gens sont malades, un test négatif est très fiable." },
-                { q: "Augmenter le seuil de détection :", o: ["Baisse la Se / Monte la Sp", "Monte la Se / Baisse la Sp"], a: 0, e: "On devient plus exigeant pour dire 'positif'." }
+            m5: { t: "Expert : Kappa & ROC", qs: [
+                { q: "AUC = 0.5 :", o: ["Hasard (inutile)", "Parfait"], a: 0, e: "Diagonale ROC." },
+                { q: "Reproductibilité :", o: ["Concordance", "Sensibilité"], a: 0, e: "Même résultat répété." },
+                { q: "Kappa retire :", o: ["L'accord par hasard", "Les erreurs"], a: 0, e: "Formule de Cohen." },
+                { q: "Dépistage :", o: ["Très sensible", "Très spécifique"], a: 0, e: "Ne rater aucun malade." },
+                { q: "Se = 100% :", o: ["Zéro faux négatif", "Zéro faux positif"], a: 0, e: "Tous les malades sont T+." },
+                { q: "Sp = 100% :", o: ["Zéro faux positif", "Zéro faux négatif"], a: 0, e: "Tous les sains sont T-." },
+                { q: "AUC = 0.85 :", o: ["Bonne performance", "Médiocre"], a: 0, e: "Test performant." },
+                { q: "VPP clinique :", o: ["Chance d'être malade si T+", "Capacité de détection"], a: 0, e: "Utile au lit du patient." },
+                { q: "VPN augmente si :", o: ["Maladie rare", "Maladie fréquente"], a: 0, e: "Plus facile d'exclure." },
+                { q: "Augmenter le seuil :", o: ["Baisse Se / Monte Sp", "Monte Se"], a: 0, e: "On devient plus strict." }
             ]},
-            m6: { t: "Expert : Risques", qs: [
-                { q: "L'OR est une approximation du RR si :", o: ["La maladie est rare (<5%)", "La maladie est fréquente"], a: 0, e: "C'est une condition mathématique nécessaire." },
-                { q: "Une étude de cohorte est dite :", o: ["Exposés vs Non-Exposés", "Malades vs Sains"], a: 0, e: "On compare selon l'exposition au départ." },
-                { q: "Létalité =", o: ["Décès / Malades", "Décès / Population"], a: 0, e: "Mesure la sévérité d'une maladie." },
-                { q: "Biais de mémorisation fréquent en :", o: ["Étude Cas-Témoins", "Étude de cohorte"], a: 0, e: "Les gens oublient leurs expositions passées." },
-                { q: "Ratio Homme/Femme =", o: ["Numérateur et Dénumérateur distincts", "Inclus l'un dans l'autre"], a: 0, e: "Un ratio compare deux groupes séparés." },
-                { q: "Si RR = 0.5 :", o: ["Facteur protecteur (risque divisé par 2)", "Facteur de risque"], a: 0, e: "Moins de 1 = protection." },
-                { q: "La randomisation permet de supprimer :", o: ["Les biais de confusion", "Les erreurs de mesure"], a: 0, e: "Elle répartit les facteurs inconnus équitablement." },
-                { q: "Épidémiologie descriptive répond à :", o: ["Qui, Où, Quand ?", "Pourquoi ?"], a: 0, e: "Elle dresse le portrait de la situation." },
-                { q: "Incidence cumulée est :", o: ["Une proportion", "Une vitesse"], a: 0, e: "C'est le nombre de nouveaux cas sur la pop. initiale." },
-                { q: "Un facteur de risque a un RR :", o: ["> 1", "< 1"], a: 0, e: "Il augmente la probabilité de maladie." }
+            m6: { t: "Expert : Épido avancée", qs: [
+                { q: "OR ~ RR si :", o: ["Maladie rare", "Fréquente"], a: 0, e: "Condition mathématique." },
+                { q: "Cohorte compare :", o: ["Exposés vs Non-Ex", "Cas vs Témoins"], a: 0, e: "Basé sur l'exposition." },
+                { q: "Létalité :", o: ["Décès / Malades", "Décès / Population"], a: 0, e: "Sévérité de la maladie." },
+                { q: "Biais de mémorisation :", o: ["Cas-Témoins", "Cohorte"], a: 0, e: "Rétrospectif." },
+                { q: "Ratio H/F :", o: ["Distincts", "Inclus"], a: 0, e: "Groupes séparés." },
+                { q: "RR = 0.5 :", o: ["Protecteur", "Risque"], a: 0, e: "Réduction de 50%." },
+                { q: "Randomisation :", o: ["Supprime biais de confusion", "Gagne du temps"], a: 0, e: "Équilibre les groupes." },
+                { q: "Épido descriptive :", o: ["Qui, Où, Quand ?", "Pourquoi ?"], a: 0, e: "Portrait de situation." },
+                { q: "Incidence cumulée :", o: ["Proportion", "Vitesse brute"], a: 0, e: "Nouveaux cas / pop initiale." },
+                { q: "Facteur de risque :", o: ["RR > 1", "RR < 1"], a: 0, e: "Augmente la probabilité." }
             ]}
         };
 
         let currentM = ''; let currentQ = 0; let score = 0;
-        let scores = JSON.parse(localStorage.getItem('ue27_ultimate_v1')) || {};
+        let scores = JSON.parse(localStorage.getItem('ue27_final_v2')) || {};
 
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('tab-active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('tab-active'));
             document.getElementById('nav-' + id).classList.add('tab-active');
-
             if(id === 'home') renderHome();
             if(id === 'stats') renderStats();
             window.scrollTo(0,0);
@@ -222,5 +235,82 @@
             Object.keys(quizData).forEach(k => {
                 const s = scores[k] || 0;
                 grid.innerHTML += `
-                    <div onclick="startQuiz('${k}')" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 cursor-pointer hover:shadow-xl hover:border-indigo-300 transition group">
-             
+                    <div onclick="startQuiz('${k}')" class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 cursor-pointer hover:shadow-xl transition group">
+                        <h4 class="font-black text-slate-800 mb-1 group-hover:text-indigo-600">${quizData[k].t}</h4>
+                        <div class="flex justify-between items-center mt-4">
+                            <div class="w-2/3 bg-slate-100 h-2 rounded-full mr-4">
+                                <div class="bg-indigo-500 h-2 rounded-full" style="width: ${s}%"></div>
+                            </div>
+                            <span class="text-sm font-bold text-indigo-600">${s}%</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function startQuiz(k) {
+            currentM = k; currentQ = 0; score = 0;
+            showSection('quiz');
+            loadQ();
+        }
+
+        function loadQ() {
+            const q = quizData[currentM].qs[currentQ];
+            document.getElementById('q-title').innerText = quizData[currentM].t;
+            document.getElementById('q-progress').innerText = `${currentQ + 1} / 10`;
+            document.getElementById('q-text').innerText = q.q;
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            const box = document.getElementById('options');
+            box.innerHTML = '';
+            q.o.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = "w-full text-left p-5 rounded-2xl border-2 border-slate-100 hover:border-indigo-200 hover:bg-indigo-50 font-semibold transition";
+                b.innerText = opt;
+                b.onclick = () => check(i, b);
+                box.appendChild(b);
+            });
+        }
+
+        function check(i, b) {
+            const q = quizData[currentM].qs[currentQ];
+            const btns = document.getElementById('options').children;
+            if(i === q.a) { score++; b.classList.add('correct'); }
+            else { b.classList.add('wrong'); btns[q.a].classList.add('correct'); }
+            document.getElementById('feedback-txt').innerText = q.e;
+            document.getElementById('feedback').classList.remove('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+            for(let btn of btns) btn.disabled = true;
+        }
+
+        document.getElementById('next-btn').onclick = () => {
+            currentQ++;
+            if(currentQ < 10) loadQ();
+            else {
+                const p = Math.round((score / 10) * 100);
+                if(p > (scores[currentM] || 0)) {
+                    scores[currentM] = p;
+                    localStorage.setItem('ue27_final_v2', JSON.stringify(scores));
+                }
+                showSection('home');
+            }
+        };
+
+        function renderStats() {
+            const ks = Object.keys(quizData);
+            const avg = Math.round(ks.reduce((a,k) => a + (scores[k]||0), 0) / ks.length);
+            document.getElementById('global-avg').innerText = avg + "%";
+            const det = document.getElementById('detail-stats');
+            det.innerHTML = '';
+            ks.forEach(k => {
+                det.innerHTML += `<div class="flex justify-between p-2 bg-slate-50 rounded-lg"><span class="text-sm font-bold text-slate-700">${quizData[k].t}</span><span class="font-bold text-indigo-600">${scores[k]||0}%</span></div>`;
+            });
+        }
+
+        function resetAll() {
+            if(confirm("Effacer tous les scores ?")) { localStorage.clear(); scores = {}; showSection('home'); }
+        }
+
+        showSection('home');
+    </script>
+</body>
+</html>
