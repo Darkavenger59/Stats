@@ -3,174 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UE27 - StatsMaster</title>
+    <title>UE27 - Master Stats & Épido</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .correct { background-color: #10b981 !important; color: white; }
         .wrong { background-color: #ef4444 !important; color: white; }
         .hidden { display: none; }
+        .tab-active { border-bottom: 4px solid white; font-weight: bold; }
+        .cours-card { border-left: 4px solid #4f46e5; background: white; padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem; shadow: 0 1px 3px rgba(0,0,0,0.1); }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen pb-10">
 
-    <nav class="bg-indigo-700 text-white p-4 shadow-md">
-        <div class="container mx-auto flex justify-between">
-            <span class="font-bold">📊 UE27 : STATS & EPIDO</span>
-            <div class="space-x-4">
-                <button onclick="showSection('home')">Modules</button>
-                <button onclick="showSection('stats')">Scores</button>
+    <nav class="bg-indigo-700 text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <span class="font-bold">📊 UE27 : RÉVISIONS</span>
+            <div class="flex space-x-4 text-sm">
+                <button id="nav-home" onclick="showSection('home')" class="tab-active py-1">Quiz</button>
+                <button id="nav-cours" onclick="showSection('cours')" class="py-1">Cours</button>
+                <button id="nav-stats" onclick="showSection('stats')" class="py-1">Scores</button>
             </div>
         </div>
     </nav>
 
+    <section id="cours" class="container mx-auto p-4 hidden">
+        <h2 class="text-2xl font-bold mb-6 text-indigo-800">Synthèse des Cours (Pr. Balayé)</h2>
+        
+        <div class="space-y-6">
+            <div class="cours-card">
+                <h3 class="text-lg font-bold text-indigo-700 underline mb-2">1. Bases de la Statistique</h3>
+                <p class="text-sm text-gray-700"><strong>Définition :</strong> La Statistique (science) vs les Statistiques (chiffres). 
+                L'étape <strong>Inférentielle</strong> est la plus cruciale : elle permet d'extrapoler de l'échantillon à la population générale.</p>
+                <ul class="list-disc ml-5 mt-2 text-xs space-y-1 text-gray-600">
+                    <li><strong>Variables :</strong> Quantitative (Continue = mesure / Discrète = compte) ou Qualitative (Nominale = sans ordre / Ordinale = avec ordre).</li>
+                    <li><strong>Indicateurs :</strong> Moyenne (sensible aux valeurs extrêmes), Médiane (50% de part et d'autre), Écart-type (dispersion).</li>
+                    <li><strong>Test Statistique :</strong> H0 (pas de différence). Si p < 0.05, on rejette H0 (résultat significatif).</li>
+                </ul>
+            </div>
+
+            <div class="cours-card">
+                <h3 class="text-lg font-bold text-indigo-700 underline mb-2">2. Évaluation Diagnostique</h3>
+                <p class="text-sm text-gray-700">On compare un test à une référence de certitude : le <strong>Gold Standard</strong>.</p>
+                <div class="grid grid-cols-2 gap-4 mt-2 text-xs">
+                    <div class="bg-indigo-50 p-2 rounded">
+                        <p class="font-bold">Qualités Intrinsèques :</p>
+                        <li><strong>Sensibilité (Se) :</strong> Capacité à détecter les malades (VP / Malades).</li>
+                        <li><strong>Spécificité (Sp) :</strong> Capacité à exclure les sains (VN / Non-malades).</li>
+                    </div>
+                    <div class="bg-green-50 p-2 rounded">
+                        <p class="font-bold">Qualités Extrinsèques :</p>
+                        <li><strong>VPP :</strong> Probabilité d'être malade si T+. Dépend de la prévalence.</li>
+                        <li><strong>VPN :</strong> Probabilité d'être sain si T-.</li>
+                    </div>
+                </div>
+                <p class="text-xs mt-2 text-gray-600"><strong>Concordance (Kappa) :</strong> Mesure l'accord entre deux observateurs en retirant l'accord dû au hasard. <br><em>Kappa > 0.8 = Excellent / < 0.4 = Faible.</em></p>
+            </div>
+
+            <div class="cours-card">
+                <h3 class="text-lg font-bold text-indigo-700 underline mb-2">3. Introduction à l'Épidémiologie</h3>
+                <p class="text-sm text-gray-700"><strong>Prévalence :</strong> Nombre de cas à un instant T (Stock). <strong>Incidence :</strong> Nouveaux cas sur une période (Flux).</p>
+                <ul class="list-disc ml-5 mt-2 text-xs space-y-1 text-gray-600">
+                    <li><strong>Étude de Cohorte :</strong> On suit des exposés/non-exposés. On calcule le <strong>Risque Relatif (RR)</strong>.</li>
+                    <li><strong>Étude Cas-Témoins :</strong> Rétrospective. On compare malades et sains. On calcule l'<strong>Odds Ratio (OR)</strong>.</li>
+                    <li><strong>Significativité :</strong> Si l'Intervalle de Confiance (IC 95%) contient la valeur <strong>1</strong>, le résultat n'est pas significatif.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
     <section id="home" class="container mx-auto p-4">
+        <h2 class="text-xl font-bold mb-4 text-gray-700">Choisissez un module :</h2>
         <div id="module-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </section>
 
     <section id="stats" class="container mx-auto p-4 hidden">
-        <div class="bg-white p-6 rounded-xl shadow text-center max-w-md mx-auto">
-            <h2 class="text-2xl font-bold mb-4">Progression Totale</h2>
-            <div id="global-avg" class="text-5xl font-bold text-indigo-600 mb-6">0%</div>
-            <div id="detail-stats" class="text-left space-y-2"></div>
-            <button onclick="resetAll()" class="mt-8 bg-red-600 text-white px-4 py-2 rounded">Réinitialiser tout</button>
+        <div class="bg-white p-6 rounded-xl shadow-lg text-center max-w-md mx-auto">
+            <h2 class="text-2xl font-bold mb-4">Ma Progression</h2>
+            <div id="global-avg" class="text-6xl font-black text-indigo-600 mb-6">0%</div>
+            <div id="detail-stats" class="text-left space-y-2 mb-6"></div>
+            <button onclick="resetAll()" class="text-red-500 text-sm font-bold border border-red-200 px-4 py-2 rounded-lg hover:bg-red-50">Réinitialiser les scores</button>
         </div>
     </section>
 
     <section id="quiz" class="container mx-auto p-4 hidden">
-        <div class="bg-white p-6 rounded-xl shadow-lg max-w-2xl mx-auto">
-            <h3 id="q-title" class="text-indigo-600 font-bold mb-2"></h3>
-            <p id="q-text" class="text-lg mb-6"></p>
-            <div id="options" class="space-y-2"></div>
-            <div id="feedback" class="mt-4 p-4 rounded bg-gray-50 hidden text-sm"></div>
-            <button id="next-btn" class="w-full mt-6 bg-indigo-600 text-white py-3 rounded hidden">Question suivante</button>
+        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-2xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="q-title" class="text-indigo-600 font-bold uppercase text-xs tracking-tighter"></h3>
+                <span id="q-progress" class="text-xs text-gray-400"></span>
+            </div>
+            <p id="q-text" class="text-xl font-semibold text-gray-800 mb-8"></p>
+            <div id="options" class="space-y-3"></div>
+            <div id="feedback" class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 hidden">
+                <p id="feedback-txt" class="text-sm"></p>
+            </div>
+            <button id="next-btn" class="w-full mt-8 bg-indigo-600 text-white py-4 rounded-xl font-bold hidden shadow-lg shadow-indigo-200">Continuer</button>
         </div>
     </section>
 
     <script>
-        const data = {
-            m1: { t: "Intro Statistique 1", qs: [
-                { q: "La statistique est :", o: ["La science du recueil", "Un chiffre seul"], a: 0, e: "C'est la science globale selon le Pr Balayé." },
-                { q: "Une taille en cm est :", o: ["Discrète", "Continue"], a: 1, e: "Mesure physique = continue." },
-                { q: "Si p < 0.05 :", o: ["On rejette H0", "On garde H0"], a: 0, e: "Le résultat est significatif." },
-                { q: "La médiane :", o: ["Divise en deux", "Est la plus fréquente"], a: 0, e: "50% au dessus, 50% en dessous." },
-                { q: "H0 signifie :", o: ["Il y a un effet", "Pas de différence"], a: 1, e: "C'est l'hypothèse nulle." }
+        const quizData = {
+            m1: { t: "Statistiques (Bases)", qs: [
+                { q: "Quelle est la définition de la statistique ?", o: ["Science du recueil et de l'analyse", "Ensemble de chiffres d'une étude"], a: 0, e: "La statistique est la science globale." },
+                { q: "La médiane est l'indicateur qui :", o: ["Partage la série en deux", "Est le plus fréquent"], a: 0, e: "50% sont au-dessus, 50% en-dessous." },
+                { q: "Une variable binaire (Sexe) est :", o: ["Qualitative nominale", "Quantitative"], a: 0, e: "C'est une catégorie sans ordre." },
+                { q: "Si p = 0.03 au seuil 5% :", o: ["Rejet de H0", "Maintien de H0"], a: 0, e: "p < 0.05 est significatif." },
+                { q: "L'écart-type exprime :", o: ["La dispersion", "La tendance centrale"], a: 0, e: "Il mesure l'étalement des données." }
             ]},
-            m2: { t: "Diagnostic 1", qs: [
-                { q: "Sensibilité :", o: ["T+ chez Malades", "T- chez sains"], a: 0, e: "Capacité à détecter la maladie." },
-                { q: "Spécificité :", o: ["T- chez sains", "Sains chez T-"], a: 0, e: "Capacité à exclure les non-malades." },
-                { q: "VPP dépend de la prévalence :", o: ["Vrai", "Faux"], a: 0, e: "Plus la maladie est rare, plus la VPP est basse." },
-                { q: "Kappa :", o: ["Liaison", "Concordance"], a: 1, e: "Accord au-delà du hasard." },
-                { q: "AUC parfaite :", o: ["0.5", "1"], a: 1, e: "1 = discrimination totale." }
+            m2: { t: "Tests Diagnostiques", qs: [
+                { q: "Probabilité d'être T+ chez les malades :", o: ["Sensibilité", "Spécificité"], a: 0, e: "Se = VP / Malades." },
+                { q: "Le Gold Standard est :", o: ["Le test de référence", "Le test le moins cher"], a: 0, e: "C'est la vérité diagnostique." },
+                { q: "Si la prévalence diminue, la VPP :", o: ["Diminue", "Augmente"], a: 0, e: "Plus une maladie est rare, plus le risque de faux positifs augmente." },
+                { q: "Le Kappa de Cohen mesure :", o: ["La concordance", "L'incidence"], a: 0, e: "Accord retirant la part du hasard." },
+                { q: "Kappa = 0.90 est un accord :", o: ["Excellent", "Médiocre"], a: 0, e: "> 0.80 est considéré comme excellent." }
             ]},
-            m3: { t: "Épidémiologie 1", qs: [
-                { q: "Incidence :", o: ["Nouveaux cas", "Anciens cas"], a: 0, e: "Mesure du flux." },
-                { q: "RR en cohorte :", o: ["Vrai", "Faux"], a: 0, e: "Nécessite de suivre les sujets." },
-                { q: "OR = 1 :", o: ["Protection", "Pas d'association"], a: 1, e: "Valeur neutre." },
-                { q: "Transversale :", o: ["Prévalence", "Incidence"], a: 0, e: "C'est une photo à un instant T." },
-                { q: "Biais de confusion :", o: ["Facteur tiers", "Erreur de calcul"], a: 0, e: "Brouille la relation réelle." }
+            m3: { t: "Épidémiologie", qs: [
+                { q: "L'incidence est une mesure de :", o: ["Flux (nouveaux cas)", "Stock (cas totaux)"], a: 0, e: "Vitesse d'apparition des cas." },
+                { q: "L'étude Cas-Témoins est :", o: ["Rétrospective", "Prospective"], a: 0, e: "On part des malades vers le passé." },
+                { q: "On calcule le Risque Relatif (RR) en :", o: ["Étude de cohorte", "Étude cas-témoins"], a: 0, e: "Nécessite de suivre les gens." },
+                { q: "Un OR < 1 indique un facteur :", o: ["Protecteur", "De risque"], a: 0, e: "Réduit la probabilité de maladie." },
+                { q: "John Snow a travaillé sur :", o: ["Le Choléra", "La variole"], a: 0, e: "Acte fondateur à Londres (1854)." }
             ]},
-            m4: { t: "Recueil (Expert)", qs: [
-                { q: "Une ligne Excel :", o: ["Un individu", "Une variable"], a: 0, e: "Une ligne = Un patient." },
-                { q: "Format PDF :", o: ["Autorisé", "Interdit"], a: 1, e: "Inexploitable pour les calculs." },
-                { q: "Cellule fusionnée :", o: ["C'est mal", "C'est bien"], a: 0, e: "Interdit en base de données." },
-                { q: "Codebook :", o: ["Dictionnaire", "Livre de cours"], a: 0, e: "Définit le sens des colonnes." },
-                { q: "Variable Sexe :", o: ["Nominale", "Ordinale"], a: 0, e: "Pas d'ordre entre H et F." }
-            ]},
-            m5: { t: "Diagnostic (Expert)", qs: [
-                { q: "ROC Diagonale :", o: ["Hasard", "Parfait"], a: 0, e: "AUC = 0.5." },
-                { q: "Baisser le seuil :", o: ["Hausse Se", "Baisse Se"], a: 0, e: "On détecte plus de gens." },
-                { q: "Kappa 0.30 :", o: ["Faible", "Fort"], a: 0, e: "Accord médiocre." },
-                { q: "Gold Standard :", o: ["La vérité", "Un test rapide"], a: 0, e: "Référence absolue." },
-                { q: "Reproductibilité :", o: ["Kappa", "p-valeur"], a: 0, e: "Concordance intra-observateur." }
-            ]},
-            m6: { t: "Épidémio (Expert)", qs: [
-                { q: "John Snow :", o: ["Cartographie", "Vaccin"], a: 0, e: "Père de l'épido moderne." },
-                { q: "Ratio H/F :", o: ["Distincts", "Inclus"], a: 0, e: "Numérateur n'est pas dans le dénum." },
-                { q: "Létalité :", o: ["Morts / Malades", "Morts / Total"], a: 0, e: "Sévérité de la maladie." },
-                { q: "OR ~ RR si :", o: ["Maladie rare", "Maladie fréquente"], a: 0, e: "Hypothèse de base." },
-                { q: "Randomisation :", o: ["Équilibre", "Vitesse"], a: 0, e: "Gère les facteurs inconnus." }
-            ] }
+            m4: { t: "Formatage (Expert)", qs: [
+                { q: "Structure idéale d'un tableau :", o: ["1 ligne = 1 individu", "1 ligne = 1 variable"], a: 0, e: "Standard informatique de base." },
+                { q: "Cellules fusionnées en Stats :", o: ["Strictement interdit", "Autorisé pour le style"], a: 0, e: "Cela empêche la lecture par les logiciels." },
+                { q: "Format à privilégier :", o: ["CSV ou XLSX", "PDF"], a: 0, e: "Le PDF est inexploitable." },
+                { q: "Variable qualitative ordinale :", o: ["Stade d'un cancer", "Couleur des yeux"], a: 0, e: "Il y a un ordre logique (I < II < III)." },
+                { q: "Le Codebook sert à :", o: ["Expliquer les variables", "Faire les calculs"], a: 0, e: "C'est le dictionnaire du tableau." }
+            ]}
         };
 
         let currentM = ''; let currentQ = 0; let score = 0;
-        let scores = JSON.parse(localStorage.getItem('ue27_scores_v3')) || {};
+        let userScores = JSON.parse(localStorage.getItem('ue27_final_v1')) || {};
 
         function showSection(id) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
+            
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('tab-active'));
+            document.getElementById('nav-' + id.split('-')[0]).classList.add('tab-active');
+
             if(id === 'home') renderHome();
             if(id === 'stats') renderStats();
         }
 
         function renderHome() {
-            const g = document.getElementById('module-grid');
-            g.innerHTML = '';
-            Object.keys(data).forEach(k => {
-                const s = scores[k] || 0;
-                g.innerHTML += `<div onclick="startQuiz('${k}')" class="bg-white p-4 rounded-xl shadow cursor-pointer hover:bg-indigo-50 border-l-4 border-indigo-500">
-                    <h4 class="font-bold">${data[k].t}</h4>
-                    <p class="text-sm">Score : ${s}%</p>
-                </div>`;
+            const grid = document.getElementById('module-grid');
+            grid.innerHTML = '';
+            Object.keys(quizData).forEach(k => {
+                const s = userScores[k] || 0;
+                grid.innerHTML += `
+                    <div onclick="startQuiz('${k}')" class="bg-white p-5 rounded-2xl shadow-sm border-b-4 ${s > 70 ? 'border-green-400' : 'border-indigo-500'} cursor-pointer hover:shadow-md transition">
+                        <h4 class="font-bold text-indigo-900">${quizData[k].t}</h4>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-xs text-gray-400">5 Questions</span>
+                            <span class="text-sm font-bold ${s > 70 ? 'text-green-600' : 'text-indigo-600'}">${s}%</span>
+                        </div>
+                    </div>`;
             });
         }
 
         function startQuiz(k) {
             currentM = k; currentQ = 0; score = 0;
             showSection('quiz');
-            loadQ();
+            loadQuestion();
         }
 
-        function loadQ() {
-            const q = data[currentM].qs[currentQ];
-            document.getElementById('q-title').innerText = data[currentM].t;
+        function loadQuestion() {
+            const q = quizData[currentM].qs[currentQ];
+            document.getElementById('q-title').innerText = quizData[currentM].t;
+            document.getElementById('q-progress').innerText = `${currentQ + 1} / 5`;
             document.getElementById('q-text').innerText = q.q;
             document.getElementById('feedback').classList.add('hidden');
             document.getElementById('next-btn').classList.add('hidden');
-            const o = document.getElementById('options');
-            o.innerHTML = '';
+            
+            const box = document.getElementById('options');
+            box.innerHTML = '';
             q.o.forEach((opt, i) => {
                 const b = document.createElement('button');
-                b.className = "w-full text-left p-3 border rounded hover:bg-gray-50";
+                b.className = "w-full text-left p-4 rounded-xl border-2 border-gray-100 hover:bg-indigo-50 font-medium transition";
                 b.innerText = opt;
-                b.onclick = () => check(i, b);
-                o.appendChild(b);
+                b.onclick = () => checkAns(i, b);
+                box.appendChild(b);
             });
         }
 
-        function check(i, b) {
-            const q = data[currentM].qs[currentQ];
-            const opts = document.getElementById('options').children;
+        function checkAns(i, b) {
+            const q = quizData[currentM].qs[currentQ];
+            const btns = document.getElementById('options').children;
             if(i === q.a) { score++; b.classList.add('correct'); }
-            else { b.classList.add('wrong'); opts[q.a].classList.add('correct'); }
-            document.getElementById('feedback').innerText = q.e;
+            else { b.classList.add('wrong'); btns[q.a].classList.add('correct'); }
+            
+            document.getElementById('feedback-txt').innerText = q.e;
             document.getElementById('feedback').classList.remove('hidden');
             document.getElementById('next-btn').classList.remove('hidden');
-            for(let btn of opts) btn.disabled = true;
+            for(let btn of btns) btn.disabled = true;
         }
 
         document.getElementById('next-btn').onclick = () => {
             currentQ++;
-            if(currentQ < data[currentM].qs.length) loadQ();
+            if(currentQ < 5) loadQuestion();
             else {
-                const p = Math.round((score / data[currentM].qs.length) * 100);
-                if(p > (scores[currentM] || 0)) { scores[currentM] = p; localStorage.setItem('ue27_scores_v3', JSON.stringify(scores)); }
+                const p = Math.round((score / 5) * 100);
+                if(p > (userScores[currentM] || 0)) {
+                    userScores[currentM] = p;
+                    localStorage.setItem('ue27_final_v1', JSON.stringify(userScores));
+                }
                 showSection('home');
             }
         };
 
         function renderStats() {
-            const ks = Object.keys(data);
-            const total = ks.reduce((a, k) => a + (scores[k] || 0), 0);
-            document.getElementById('global-avg').innerText = Math.round(total / ks.length) + "%";
+            const keys = Object.keys(quizData);
+            const avg = Math.round(keys.reduce((a,k) => a + (userScores[k]||0), 0) / keys.length);
+            document.getElementById('global-avg').innerText = avg + "%";
             const det = document.getElementById('detail-stats');
             det.innerHTML = '';
-            ks.forEach(k => {
-                det.innerHTML += `<div class="flex justify-between border-b py-1"><span>${data[k].t}</span><span class="font-bold">${scores[k] || 0}%</span></div>`;
+            keys.forEach(k => {
+                det.innerHTML += `<div class="flex justify-between text-sm border-b pb-1"><span>${quizData[k].t}</span><span class="font-bold text-indigo-600">${userScores[k]||0}%</span></div>`;
             });
         }
 
         function resetAll() {
-            if(confirm("Tout effacer ?")) { localStorage.clear(); scores = {}; renderStats(); renderHome(); }
+            if(confirm("Tout effacer ?")) { localStorage.clear(); userScores = {}; showSection('home'); }
         }
 
         showSection('home');
